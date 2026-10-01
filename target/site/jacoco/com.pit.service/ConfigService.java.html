@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ConfigService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Personal Income Tax System</a> &gt; <a href="index.source.html" class="el_package">com.pit.service</a> &gt; <span class="el_source">ConfigService.java</span></div><h1>ConfigService.java</h1><pre class="source lang-java linenums">package com.pit.service;
+
+import com.pit.model.SystemConfig;
+import org.springframework.stereotype.Service;
+
+@Service
+public class ConfigService {
+    private SystemConfig currentConfig;
+
+<span class="fc" id="L10">    public ConfigService() {</span>
+<span class="fc" id="L11">        this.currentConfig = new SystemConfig();</span>
+<span class="fc" id="L12">    }</span>
+
+    public synchronized SystemConfig getConfig() {
+<span class="fc" id="L15">        return this.currentConfig;</span>
+    }
+
+    public synchronized void updateConfig(double personalDeduction, double dependentDeduction,
+                                         double bhxhRate, double bhytRate, double bhtnRate,
+                                         double insuranceBaseSalaryCap) {
+<span class="pc bpc" id="L21" title="1 of 2 branches missed.">        if (personalDeduction &gt; 0) this.currentConfig.setPersonalDeduction(personalDeduction);</span>
+<span class="pc bpc" id="L22" title="1 of 2 branches missed.">        if (dependentDeduction &gt;= 0) this.currentConfig.setDependentDeduction(dependentDeduction);</span>
+<span class="pc bpc" id="L23" title="1 of 2 branches missed.">        if (bhxhRate &gt;= 0) this.currentConfig.setBhxhRate(bhxhRate);</span>
+<span class="pc bpc" id="L24" title="1 of 2 branches missed.">        if (bhytRate &gt;= 0) this.currentConfig.setBhytRate(bhytRate);</span>
+<span class="pc bpc" id="L25" title="1 of 2 branches missed.">        if (bhtnRate &gt;= 0) this.currentConfig.setBhtnRate(bhtnRate);</span>
+<span class="pc bpc" id="L26" title="1 of 2 branches missed.">        if (insuranceBaseSalaryCap &gt; 0) this.currentConfig.setInsuranceBaseSalaryCap(insuranceBaseSalaryCap);</span>
+<span class="fc" id="L27">    }</span>
+
+    public synchronized void resetToDefault() {
+<span class="fc" id="L30">        this.currentConfig = new SystemConfig();</span>
+<span class="fc" id="L31">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

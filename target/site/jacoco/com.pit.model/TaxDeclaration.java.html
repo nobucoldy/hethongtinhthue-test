@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TaxDeclaration.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Personal Income Tax System</a> &gt; <a href="index.source.html" class="el_package">com.pit.model</a> &gt; <span class="el_source">TaxDeclaration.java</span></div><h1>TaxDeclaration.java</h1><pre class="source lang-java linenums">package com.pit.model;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+public class TaxDeclaration {
+    private String id;
+    private String userId;
+    private String fullName;
+    private String taxCode;
+    private String citizenId;
+    private int taxYear;
+    private int taxMonth; // 1-12, hoặc 0 nếu quyết toán năm
+    private double grossSalary;
+    private double bonusIncome;
+    private double otherIncome;
+    private double nonTaxableIncome;
+    private int dependentCount;
+    private double charityDonation;
+    
+    // Kết quả tính toán
+    private double totalGrossIncome;
+    private double taxableIncome;
+    private double totalDeductions;
+    private double assessedIncome;
+    private double taxAmount;
+    private double netIncome;
+    
+    // Trạng thái: &quot;PENDING&quot; (Chờ nộp thuế), &quot;PAID&quot; (Đã nộp), &quot;APPROVED&quot; (Đã duyệt)
+    private String status;
+    private String createdAt;
+    private String paymentReceiptId;
+
+<span class="fc" id="L34">    public TaxDeclaration() {</span>
+<span class="fc" id="L35">        this.createdAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd HH:mm:ss&quot;));</span>
+<span class="fc" id="L36">        this.status = &quot;PENDING&quot;;</span>
+<span class="fc" id="L37">    }</span>
+
+<span class="fc" id="L39">    public String getId() { return id; }</span>
+<span class="fc" id="L40">    public void setId(String id) { this.id = id; }</span>
+
+<span class="fc" id="L42">    public String getUserId() { return userId; }</span>
+<span class="fc" id="L43">    public void setUserId(String userId) { this.userId = userId; }</span>
+
+<span class="fc" id="L45">    public String getFullName() { return fullName; }</span>
+<span class="fc" id="L46">    public void setFullName(String fullName) { this.fullName = fullName; }</span>
+
+<span class="fc" id="L48">    public String getTaxCode() { return taxCode; }</span>
+<span class="fc" id="L49">    public void setTaxCode(String taxCode) { this.taxCode = taxCode; }</span>
+
+<span class="fc" id="L51">    public String getCitizenId() { return citizenId; }</span>
+<span class="fc" id="L52">    public void setCitizenId(String citizenId) { this.citizenId = citizenId; }</span>
+
+<span class="fc" id="L54">    public int getTaxYear() { return taxYear; }</span>
+<span class="fc" id="L55">    public void setTaxYear(int taxYear) { this.taxYear = taxYear; }</span>
+
+<span class="fc" id="L57">    public int getTaxMonth() { return taxMonth; }</span>
+<span class="fc" id="L58">    public void setTaxMonth(int taxMonth) { this.taxMonth = taxMonth; }</span>
+
+<span class="fc" id="L60">    public double getGrossSalary() { return grossSalary; }</span>
+<span class="fc" id="L61">    public void setGrossSalary(double grossSalary) { this.grossSalary = grossSalary; }</span>
+
+<span class="fc" id="L63">    public double getBonusIncome() { return bonusIncome; }</span>
+<span class="fc" id="L64">    public void setBonusIncome(double bonusIncome) { this.bonusIncome = bonusIncome; }</span>
+
+<span class="fc" id="L66">    public double getOtherIncome() { return otherIncome; }</span>
+<span class="fc" id="L67">    public void setOtherIncome(double otherIncome) { this.otherIncome = otherIncome; }</span>
+
+<span class="fc" id="L69">    public double getNonTaxableIncome() { return nonTaxableIncome; }</span>
+<span class="fc" id="L70">    public void setNonTaxableIncome(double nonTaxableIncome) { this.nonTaxableIncome = nonTaxableIncome; }</span>
+
+<span class="fc" id="L72">    public int getDependentCount() { return dependentCount; }</span>
+<span class="fc" id="L73">    public void setDependentCount(int dependentCount) { this.dependentCount = dependentCount; }</span>
+
+<span class="fc" id="L75">    public double getCharityDonation() { return charityDonation; }</span>
+<span class="fc" id="L76">    public void setCharityDonation(double charityDonation) { this.charityDonation = charityDonation; }</span>
+
+<span class="fc" id="L78">    public double getTotalGrossIncome() { return totalGrossIncome; }</span>
+<span class="fc" id="L79">    public void setTotalGrossIncome(double totalGrossIncome) { this.totalGrossIncome = totalGrossIncome; }</span>
+
+<span class="fc" id="L81">    public double getTaxableIncome() { return taxableIncome; }</span>
+<span class="fc" id="L82">    public void setTaxableIncome(double taxableIncome) { this.taxableIncome = taxableIncome; }</span>
+
+<span class="fc" id="L84">    public double getTotalDeductions() { return totalDeductions; }</span>
+<span class="fc" id="L85">    public void setTotalDeductions(double totalDeductions) { this.totalDeductions = totalDeductions; }</span>
+
+<span class="fc" id="L87">    public double getAssessedIncome() { return assessedIncome; }</span>
+<span class="fc" id="L88">    public void setAssessedIncome(double assessedIncome) { this.assessedIncome = assessedIncome; }</span>
+
+<span class="fc" id="L90">    public double getTaxAmount() { return taxAmount; }</span>
+<span class="fc" id="L91">    public void setTaxAmount(double taxAmount) { this.taxAmount = taxAmount; }</span>
+
+<span class="fc" id="L93">    public double getNetIncome() { return netIncome; }</span>
+<span class="fc" id="L94">    public void setNetIncome(double netIncome) { this.netIncome = netIncome; }</span>
+
+<span class="fc" id="L96">    public String getStatus() { return status; }</span>
+<span class="fc" id="L97">    public void setStatus(String status) { this.status = status; }</span>
+
+<span class="fc" id="L99">    public String getCreatedAt() { return createdAt; }</span>
+<span class="fc" id="L100">    public void setCreatedAt(String createdAt) { this.createdAt = createdAt; }</span>
+
+<span class="fc" id="L102">    public String getPaymentReceiptId() { return paymentReceiptId; }</span>
+<span class="fc" id="L103">    public void setPaymentReceiptId(String paymentReceiptId) { this.paymentReceiptId = paymentReceiptId; }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

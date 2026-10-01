@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AuthController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Personal Income Tax System</a> &gt; <a href="index.source.html" class="el_package">com.pit.controller</a> &gt; <span class="el_source">AuthController.java</span></div><h1>AuthController.java</h1><pre class="source lang-java linenums">package com.pit.controller;
+
+import com.pit.model.User;
+import com.pit.service.UserService;
+import com.pit.util.ValidationUtil;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
+@RestController
+@RequestMapping(&quot;/api/auth&quot;)
+public class AuthController {
+
+    private final UserService userService;
+
+    @Autowired
+<span class="fc" id="L22">    public AuthController(UserService userService) {</span>
+<span class="fc" id="L23">        this.userService = userService;</span>
+<span class="fc" id="L24">    }</span>
+
+    @PostMapping(&quot;/login&quot;)
+    public ResponseEntity&lt;?&gt; login(@RequestBody Map&lt;String, String&gt; body, HttpSession session) {
+<span class="fc" id="L28">        String username = body.get(&quot;username&quot;);</span>
+<span class="fc" id="L29">        String password = body.get(&quot;password&quot;);</span>
+
+<span class="pc bpc" id="L31" title="2 of 4 branches missed.">        if (username == null || password == null) {</span>
+<span class="nc" id="L32">            return ResponseEntity.badRequest().body(createResponse(false, &quot;Vui lòng nhập đầy đủ tên đăng nhập và mật khẩu!&quot;));</span>
+        }
+
+<span class="fc" id="L35">        Optional&lt;User&gt; userOpt = userService.login(username, password);</span>
+<span class="fc bfc" id="L36" title="All 2 branches covered.">        if (userOpt.isPresent()) {</span>
+<span class="fc" id="L37">            User user = userOpt.get();</span>
+<span class="fc" id="L38">            session.setAttribute(&quot;user&quot;, user);</span>
+
+<span class="fc" id="L40">            Map&lt;String, Object&gt; resp = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L41">            resp.put(&quot;success&quot;, true);</span>
+<span class="fc" id="L42">            resp.put(&quot;message&quot;, &quot;Đăng nhập thành công!&quot;);</span>
+<span class="fc" id="L43">            resp.put(&quot;user&quot;, sanitizeUser(user));</span>
+<span class="fc" id="L44">            return ResponseEntity.ok(resp);</span>
+        } else {
+<span class="fc" id="L46">            return ResponseEntity.status(401).body(createResponse(false, &quot;Tên đăng nhập hoặc mật khẩu không chính xác!&quot;));</span>
+        }
+    }
+
+    @PostMapping(&quot;/register&quot;)
+    public ResponseEntity&lt;?&gt; register(@RequestBody Map&lt;String, String&gt; body, HttpSession session) {
+<span class="fc" id="L52">        String username = body.get(&quot;username&quot;);</span>
+<span class="fc" id="L53">        String password = body.get(&quot;password&quot;);</span>
+<span class="fc" id="L54">        String fullName = body.get(&quot;fullName&quot;);</span>
+<span class="fc" id="L55">        String email = body.get(&quot;email&quot;);</span>
+<span class="fc" id="L56">        String phone = body.get(&quot;phone&quot;);</span>
+<span class="fc" id="L57">        String taxCode = body.get(&quot;taxCode&quot;);</span>
+<span class="fc" id="L58">        String citizenId = body.get(&quot;citizenId&quot;);</span>
+
+        // Validation
+<span class="fc bfc" id="L61" title="All 2 branches covered.">        if (!ValidationUtil.isValidUsername(username)) {</span>
+<span class="fc" id="L62">            return ResponseEntity.badRequest().body(createResponse(false, &quot;Tên đăng nhập không hợp lệ (3-30 ký tự chữ, số hoặc gạch dưới)!&quot;));</span>
+        }
+<span class="pc bpc" id="L64" title="1 of 2 branches missed.">        if (!ValidationUtil.isValidPassword(password)) {</span>
+<span class="nc" id="L65">            return ResponseEntity.badRequest().body(createResponse(false, &quot;Mật khẩu phải có độ dài từ 6 ký tự trở lên!&quot;));</span>
+        }
+<span class="pc bpc" id="L67" title="2 of 4 branches missed.">        if (fullName == null || fullName.trim().length() &lt; 2) {</span>
+<span class="nc" id="L68">            return ResponseEntity.badRequest().body(createResponse(false, &quot;Vui lòng nhập họ và tên hợp lệ!&quot;));</span>
+        }
+<span class="pc bpc" id="L70" title="1 of 2 branches missed.">        if (!ValidationUtil.isValidEmail(email)) {</span>
+<span class="nc" id="L71">            return ResponseEntity.badRequest().body(createResponse(false, &quot;Địa chỉ email không đúng định dạng!&quot;));</span>
+        }
+<span class="pc bpc" id="L73" title="1 of 2 branches missed.">        if (!ValidationUtil.isValidPhone(phone)) {</span>
+<span class="nc" id="L74">            return ResponseEntity.badRequest().body(createResponse(false, &quot;Số điện thoại phải gồm 10 chữ số bắt đầu bằng số 0!&quot;));</span>
+        }
+<span class="pc bpc" id="L76" title="1 of 2 branches missed.">        if (!ValidationUtil.isValidTaxCode(taxCode)) {</span>
+<span class="nc" id="L77">            return ResponseEntity.badRequest().body(createResponse(false, &quot;Mã số thuế phải gồm 10 chữ số hợp lệ!&quot;));</span>
+        }
+<span class="pc bpc" id="L79" title="1 of 2 branches missed.">        if (!ValidationUtil.isValidCitizenId(citizenId)) {</span>
+<span class="nc" id="L80">            return ResponseEntity.badRequest().body(createResponse(false, &quot;Căn cước công dân (CCCD) phải gồm 12 chữ số hợp lệ!&quot;));</span>
+        }
+
+        try {
+<span class="fc" id="L84">            User user = userService.register(username, password, fullName, email, phone, taxCode, citizenId);</span>
+<span class="fc" id="L85">            session.setAttribute(&quot;user&quot;, user);</span>
+
+<span class="fc" id="L87">            Map&lt;String, Object&gt; resp = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L88">            resp.put(&quot;success&quot;, true);</span>
+<span class="fc" id="L89">            resp.put(&quot;message&quot;, &quot;Đăng ký tài khoản thành công!&quot;);</span>
+<span class="fc" id="L90">            resp.put(&quot;user&quot;, sanitizeUser(user));</span>
+<span class="fc" id="L91">            return ResponseEntity.ok(resp);</span>
+<span class="nc" id="L92">        } catch (IllegalArgumentException e) {</span>
+<span class="nc" id="L93">            return ResponseEntity.badRequest().body(createResponse(false, e.getMessage()));</span>
+        }
+    }
+
+    @GetMapping(&quot;/me&quot;)
+    public ResponseEntity&lt;?&gt; getCurrentUser(HttpSession session) {
+<span class="fc" id="L99">        User user = (User) session.getAttribute(&quot;user&quot;);</span>
+<span class="fc bfc" id="L100" title="All 2 branches covered.">        if (user != null) {</span>
+<span class="fc" id="L101">            Map&lt;String, Object&gt; resp = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L102">            resp.put(&quot;success&quot;, true);</span>
+<span class="fc" id="L103">            resp.put(&quot;user&quot;, sanitizeUser(user));</span>
+<span class="fc" id="L104">            return ResponseEntity.ok(resp);</span>
+        }
+<span class="fc" id="L106">        return ResponseEntity.status(401).body(createResponse(false, &quot;Chưa đăng nhập&quot;));</span>
+    }
+
+    @PostMapping(&quot;/logout&quot;)
+    public ResponseEntity&lt;?&gt; logout(HttpSession session) {
+<span class="fc" id="L111">        session.invalidate();</span>
+<span class="fc" id="L112">        return ResponseEntity.ok(createResponse(true, &quot;Đăng xuất thành công!&quot;));</span>
+    }
+
+    private Map&lt;String, Object&gt; createResponse(boolean success, String message) {
+<span class="fc" id="L116">        Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L117">        map.put(&quot;success&quot;, success);</span>
+<span class="fc" id="L118">        map.put(&quot;message&quot;, message);</span>
+<span class="fc" id="L119">        return map;</span>
+    }
+
+    private Map&lt;String, Object&gt; sanitizeUser(User user) {
+<span class="fc" id="L123">        Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L124">        map.put(&quot;id&quot;, user.getId());</span>
+<span class="fc" id="L125">        map.put(&quot;username&quot;, user.getUsername());</span>
+<span class="fc" id="L126">        map.put(&quot;fullName&quot;, user.getFullName());</span>
+<span class="fc" id="L127">        map.put(&quot;email&quot;, user.getEmail());</span>
+<span class="fc" id="L128">        map.put(&quot;phone&quot;, user.getPhone());</span>
+<span class="fc" id="L129">        map.put(&quot;taxCode&quot;, user.getTaxCode());</span>
+<span class="fc" id="L130">        map.put(&quot;citizenId&quot;, user.getCitizenId());</span>
+<span class="fc" id="L131">        map.put(&quot;role&quot;, user.getRole());</span>
+<span class="fc" id="L132">        return map;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

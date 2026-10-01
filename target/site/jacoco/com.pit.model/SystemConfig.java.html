@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SystemConfig.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Personal Income Tax System</a> &gt; <a href="index.source.html" class="el_package">com.pit.model</a> &gt; <span class="el_source">SystemConfig.java</span></div><h1>SystemConfig.java</h1><pre class="source lang-java linenums">package com.pit.model;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class SystemConfig {
+    private double personalDeduction;       // Mức giảm trừ bản thân (VNĐ/tháng), mặc định 11.000.000
+    private double dependentDeduction;      // Mức giảm trừ người phụ thuộc (VNĐ/tháng/người), mặc định 4.400.000
+    private double bhxhRate;                 // Tỷ lệ BHXH (mặc định 0.08 = 8%)
+    private double bhytRate;                 // Tỷ lệ BHYT (mặc định 0.015 = 1.5%)
+    private double bhtnRate;                 // Tỷ lệ BHTN (mặc định 0.01 = 1%)
+    private double insuranceBaseSalaryCap;   // Mức trần lương tính bảo hiểm (VNĐ), mặc định 36.000.000
+    private List&lt;TaxBracket&gt; brackets;       // 7 bậc thuế lũy tiến từng phần
+
+<span class="fc" id="L15">    public SystemConfig() {</span>
+<span class="fc" id="L16">        this.personalDeduction = 11000000.0;</span>
+<span class="fc" id="L17">        this.dependentDeduction = 4400000.0;</span>
+<span class="fc" id="L18">        this.bhxhRate = 0.08;</span>
+<span class="fc" id="L19">        this.bhytRate = 0.015;</span>
+<span class="fc" id="L20">        this.bhtnRate = 0.01;</span>
+<span class="fc" id="L21">        this.insuranceBaseSalaryCap = 46800000.0; // 20 lần mức lương cơ sở hiện hành 2.340.000đ</span>
+<span class="fc" id="L22">        this.brackets = initDefaultBrackets();</span>
+<span class="fc" id="L23">    }</span>
+
+    public static List&lt;TaxBracket&gt; initDefaultBrackets() {
+<span class="fc" id="L26">        List&lt;TaxBracket&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L27">        list.add(new TaxBracket(1, 0.0, 5000000.0, 0.05, 0.0, &quot;Đến 5 triệu VNĐ&quot;));</span>
+<span class="fc" id="L28">        list.add(new TaxBracket(2, 5000000.0, 10000000.0, 0.10, 250000.0, &quot;Trên 5 đến 10 triệu VNĐ&quot;));</span>
+<span class="fc" id="L29">        list.add(new TaxBracket(3, 10000000.0, 18000000.0, 0.15, 750000.0, &quot;Trên 10 đến 18 triệu VNĐ&quot;));</span>
+<span class="fc" id="L30">        list.add(new TaxBracket(4, 18000000.0, 32000000.0, 0.20, 1650000.0, &quot;Trên 18 đến 32 triệu VNĐ&quot;));</span>
+<span class="fc" id="L31">        list.add(new TaxBracket(5, 32000000.0, 52000000.0, 0.25, 3250000.0, &quot;Trên 32 đến 52 triệu VNĐ&quot;));</span>
+<span class="fc" id="L32">        list.add(new TaxBracket(6, 52000000.0, 80000000.0, 0.30, 5850000.0, &quot;Trên 52 đến 80 triệu VNĐ&quot;));</span>
+<span class="fc" id="L33">        list.add(new TaxBracket(7, 80000000.0, Double.MAX_VALUE, 0.35, 9850000.0, &quot;Trên 80 triệu VNĐ&quot;));</span>
+<span class="fc" id="L34">        return list;</span>
+    }
+
+<span class="fc" id="L37">    public double getPersonalDeduction() { return personalDeduction; }</span>
+<span class="fc" id="L38">    public void setPersonalDeduction(double personalDeduction) { this.personalDeduction = personalDeduction; }</span>
+
+<span class="fc" id="L40">    public double getDependentDeduction() { return dependentDeduction; }</span>
+<span class="fc" id="L41">    public void setDependentDeduction(double dependentDeduction) { this.dependentDeduction = dependentDeduction; }</span>
+
+<span class="fc" id="L43">    public double getBhxhRate() { return bhxhRate; }</span>
+<span class="fc" id="L44">    public void setBhxhRate(double bhxhRate) { this.bhxhRate = bhxhRate; }</span>
+
+<span class="fc" id="L46">    public double getBhytRate() { return bhytRate; }</span>
+<span class="fc" id="L47">    public void setBhytRate(double bhytRate) { this.bhytRate = bhytRate; }</span>
+
+<span class="fc" id="L49">    public double getBhtnRate() { return bhtnRate; }</span>
+<span class="fc" id="L50">    public void setBhtnRate(double bhtnRate) { this.bhtnRate = bhtnRate; }</span>
+
+<span class="fc" id="L52">    public double getInsuranceBaseSalaryCap() { return insuranceBaseSalaryCap; }</span>
+<span class="fc" id="L53">    public void setInsuranceBaseSalaryCap(double insuranceBaseSalaryCap) { this.insuranceBaseSalaryCap = insuranceBaseSalaryCap; }</span>
+
+<span class="fc" id="L55">    public List&lt;TaxBracket&gt; getBrackets() { return brackets; }</span>
+<span class="fc" id="L56">    public void setBrackets(List&lt;TaxBracket&gt; brackets) { this.brackets = brackets; }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

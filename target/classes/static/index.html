@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ Thống Tính Thuế Thu Nhập Cá Nhân (PIT System)</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="/index.html" id="brand-link">
+                <i class="fa-solid fa-calculator brand-icon"></i> Cổng Thuế TNCN Điện Tử
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navMenu">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item me-2">
+                        <a class="nav-link active" href="/index.html"><i class="fa-solid fa-home"></i> Trang chủ</a>
+                    </li>
+                    <li class="nav-item me-2">
+                        <a class="nav-link" href="#quick-calc-section"><i class="fa-solid fa-chart-pie"></i> Tính thuế nhanh</a>
+                    </li>
+                    <li class="nav-item" id="nav-auth-buttons">
+                        <button class="btn btn-outline-light btn-sm me-2" data-bs-toggle="modal" data-bs-target="#loginModal" id="btn-open-login" data-testid="btn-open-login">
+                            <i class="fa-solid fa-right-to-bracket"></i> Đăng nhập
+                        </button>
+                        <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#registerModal" id="btn-open-register" data-testid="btn-open-register">
+                            <i class="fa-solid fa-user-plus"></i> Đăng ký
+                        </button>
+                    </li>
+                    <li class="nav-item d-none" id="nav-user-info">
+                        <span class="text-white me-2" id="nav-user-name"></span>
+                        <a href="/dashboard.html" class="btn btn-warning btn-sm me-2" id="btn-goto-dashboard">Vào Dashboard</a>
+                        <button class="btn btn-outline-light btn-sm" onclick="logout()" id="btn-nav-logout">Đăng xuất</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Banner -->
+    <header class="hero-banner text-center">
+        <div class="container">
+            <h1 class="display-5 fw-bold mb-3">HỆ THỐNG TÍNH THUẾ THU NHẬP CÁ NHÂN</h1>
+            <p class="lead mb-4">Áp dụng Luật Thuế TNCN Việt Nam & Biểu thuế lũy tiến từng phần 7 bậc</p>
+            <div class="d-flex justify-content-center gap-3">
+                <a href="#quick-calc-section" class="btn btn-light btn-lg px-4 fw-bold text-primary">
+                    <i class="fa-solid fa-calculator"></i> Tính nhẩm thuế ngay
+                </a>
+                <button class="btn btn-outline-light btn-lg px-4" data-bs-toggle="modal" data-bs-target="#loginModal">
+                    <i class="fa-solid fa-file-invoice-dollar"></i> Kê khai & Nộp thuế
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Quick Calculator Section -->
+    <main class="container my-4" id="quick-calc-section">
+        <div class="row g-4">
+            <!-- Left: Input Form -->
+            <div class="col-lg-6">
+                <div class="card h-100">
+                    <div class="card-header bg-white">
+                        <h4 class="card-title mb-0 text-primary">
+                            <i class="fa-solid fa-sliders"></i> Công Cụ Tính Nhanh Thuế TNCN
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <form id="quickCalcForm">
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold" for="qcGrossSalary">Lương chính / Thu nhập tháng (VNĐ) <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fa-solid fa-money-bill-wave"></i></span>
+                                    <input type="number" class="form-control" id="qcGrossSalary" data-testid="input-gross-salary" placeholder="Ví dụ: 25000000" value="25000000" min="0" required>
+                                    <span class="input-group-text">VNĐ</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label" for="qcBonus">Tiền thưởng (VNĐ)</label>
+                                    <input type="number" class="form-control" id="qcBonus" data-testid="input-bonus" placeholder="0" value="0" min="0">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label" for="qcOther">Thu nhập chịu thuế khác</label>
+                                    <input type="number" class="form-control" id="qcOther" data-testid="input-other" placeholder="0" value="0" min="0">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label" for="qcNonTaxable">Thu nhập miễn thuế (nếu có)</label>
+                                    <input type="number" class="form-control" id="qcNonTaxable" data-testid="input-non-taxable" placeholder="0" value="0" min="0">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-semibold" for="qcDependents">Số người phụ thuộc</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fa-solid fa-user-group"></i></span>
+                                        <input type="number" class="form-control" id="qcDependents" data-testid="input-dependents" placeholder="0" value="1" min="0" max="50">
+                                        <span class="input-group-text">Người</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label" for="qcCharity">Đóng góp từ thiện, nhân đạo (VNĐ)</label>
+                                <input type="number" class="form-control" id="qcCharity" data-testid="input-charity" placeholder="0" value="0" min="0">
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary btn-lg" id="btn-quick-calculate" data-testid="btn-quick-calculate">
+                                    <i class="fa-solid fa-calculator"></i> Tính Thuế Ngay
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Calculation Breakdown -->
+            <div class="col-lg-6">
+                <div class="card h-100">
+                    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                        <h4 class="card-title mb-0 text-success">
+                            <i class="fa-solid fa-receipt"></i> Kết Quả Tính Chi Tiết
+                        </h4>
+                        <span class="badge bg-primary" id="qcMethodBadge">Lũy tiến 7 bậc</span>
+                    </div>
+                    <div class="card-body">
+                        <!-- High Level Box -->
+                        <div class="tax-summary-box mb-3 text-center">
+                            <div class="text-muted mb-1">Thuế TNCN phải nộp tháng này:</div>
+                            <div class="tax-amount-highlight" id="resTaxAmount" data-testid="result-tax-amount">0 đ</div>
+                            <div class="mt-2 text-dark">
+                                Thu nhập thực nhận (Net): <strong class="text-success" id="resNetIncome" data-testid="result-net-income">0 đ</strong>
+                            </div>
+                        </div>
+
+                        <!-- Breakdown details list -->
+                        <ul class="list-group list-group-flush mb-3">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span><i class="fa-solid fa-wallet text-secondary me-2"></i> Tổng thu nhập trước thuế:</span>
+                                <strong id="resTotalGross">0 đ</strong>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span><i class="fa-solid fa-shield-heart text-info me-2"></i> Bảo hiểm bắt buộc (10.5%):</span>
+                                <span class="text-danger" id="resTotalInsurance">0 đ</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span><i class="fa-solid fa-user text-primary me-2"></i> Giảm trừ bản thân:</span>
+                                <span class="text-muted" id="resPersonalDeduction">11.000.000 đ</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span><i class="fa-solid fa-users text-primary me-2"></i> Giảm trừ người phụ thuộc:</span>
+                                <span class="text-muted" id="resDependentDeduction">0 đ</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center bg-light">
+                                <span><i class="fa-solid fa-scale-balanced text-warning me-2"></i> <strong>Thu nhập tính thuế (TNTT):</strong></span>
+                                <strong class="text-primary" id="resAssessedIncome" data-testid="result-assessed-income">0 đ</strong>
+                            </li>
+                        </ul>
+
+                        <!-- Progressive brackets table -->
+                        <h6 class="fw-bold mb-2"><i class="fa-solid fa-table-list"></i> Diễn giải thuế theo 7 bậc:</h6>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-bordered text-center align-middle" id="bracketTable">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Bậc</th>
+                                        <th>Thu nhập tính thuế</th>
+                                        <th>Thuế suất</th>
+                                        <th>Tiền thuế</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="bracketTableBody">
+                                    <!-- Populated by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title"><i class="fa-solid fa-right-to-bracket"></i> Đăng Nhập Hệ Thống</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-info py-2" style="font-size: 0.88rem;">
+                        <strong>Tài khoản mẫu:</strong><br>
+                        • Người nộp thuế: <button class="btn btn-xs btn-outline-dark py-0" type="button" onclick="fillUser()">Điền User (nguyenvana)</button><br>
+                        • Cán bộ thuế/Admin: <button class="btn btn-xs btn-outline-dark py-0" type="button" onclick="fillAdmin()">Điền Admin (admin)</button>
+                    </div>
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <label class="form-label" for="loginUsername">Tên đăng nhập</label>
+                            <input type="text" class="form-control" id="loginUsername" data-testid="login-username" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="loginPassword">Mật khẩu</label>
+                            <input type="password" class="form-control" id="loginPassword" data-testid="login-password" required>
+                        </div>
+                        <div id="loginError" class="text-danger mb-3 d-none"></div>
+                        <button type="submit" class="btn btn-primary w-100" id="btn-submit-login" data-testid="btn-submit-login">Đăng nhập</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal fade" id="registerModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-warning text-dark">
+                    <h5 class="modal-title"><i class="fa-solid fa-user-plus"></i> Đăng Ký Người Nộp Thuế Mới</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="registerForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="regUsername">Tên đăng nhập <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="regUsername" data-testid="reg-username" placeholder="nguyenvanc" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="regPassword">Mật khẩu <span class="text-danger">*</span></label>
+                                <input type="password" class="form-control" id="regPassword" data-testid="reg-password" placeholder="Tối thiểu 6 ký tự" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="regFullName">Họ và tên <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="regFullName" data-testid="reg-fullname" placeholder="Nguyễn Văn C" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="regEmail">Email <span class="text-danger">*</span></label>
+                                <input type="email" class="form-control" id="regEmail" data-testid="reg-email" placeholder="vanc@example.com" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label" for="regPhone">Số điện thoại <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="regPhone" data-testid="reg-phone" placeholder="0912345678" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label" for="regTaxCode">Mã số thuế (10 số) <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="regTaxCode" data-testid="reg-taxcode" placeholder="0123456789" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label" for="regCitizenId">CCCD (12 số) <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="regCitizenId" data-testid="reg-citizenid" placeholder="001200001234" required>
+                            </div>
+                        </div>
+                        <div id="registerError" class="text-danger mb-3 d-none"></div>
+                        <button type="submit" class="btn btn-warning w-100 fw-bold" id="btn-submit-register" data-testid="btn-submit-register">Tạo Tài Khoản</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer text-center">
+        <div class="container">
+            <p class="mb-1">Hệ Thống Tính Thuế Thu Nhập Cá Nhân - Môn Kiểm Thử Phần Mềm (SQA)</p>
+            <p class="mb-0 text-muted small">Cài đặt bằng Java, Spring Boot, Maven, JUnit 5, JaCoCo, Selenium & JMeter (YC 1 - YC 9)</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/app.js"></script>
+    <script>
+        function fillUser() {
+            document.getElementById('loginUsername').value = 'nguyenvana';
+            document.getElementById('loginPassword').value = 'User@123';
+        }
+        function fillAdmin() {
+            document.getElementById('loginUsername').value = 'admin';
+            document.getElementById('loginPassword').value = 'Admin@123';
+        }
+
+        async function triggerQuickCalc() {
+            try {
+                const data = await performQuickCalculate(
+                    document.getElementById('qcGrossSalary').value,
+                    document.getElementById('qcBonus').value,
+                    document.getElementById('qcOther').value,
+                    document.getElementById('qcNonTaxable').value,
+                    document.getElementById('qcDependents').value,
+                    document.getElementById('qcCharity').value
+                );
+                
+                document.getElementById('resTaxAmount').innerText = formatVnd(data.totalTax);
+                document.getElementById('resNetIncome').innerText = formatVnd(data.netIncome);
+                document.getElementById('resTotalGross').innerText = formatVnd(data.totalGrossIncome);
+                document.getElementById('resTotalInsurance').innerText = '-' + formatVnd(data.totalInsurance);
+                document.getElementById('resPersonalDeduction').innerText = '-' + formatVnd(data.personalDeduction);
+                document.getElementById('resDependentDeduction').innerText = '-' + formatVnd(data.dependentDeduction);
+                document.getElementById('resAssessedIncome').innerText = formatVnd(data.assessedIncome);
+
+                const tbody = document.getElementById('bracketTableBody');
+                tbody.innerHTML = '';
+                if (data.bracketDetails && data.bracketDetails.length > 0) {
+                    data.bracketDetails.forEach(b => {
+                        const tr = document.createElement('tr');
+                        if (b.taxAmount > 0) tr.classList.add('table-warning');
+                        tr.innerHTML = `
+                            <td><span class="badge ${b.taxAmount > 0 ? 'bg-danger' : 'bg-secondary'}">Bậc ${b.bracket}</span></td>
+                            <td>${formatVnd(b.incomeInBracket)}</td>
+                            <td>${(b.rate * 100).toFixed(0)}%</td>
+                            <td class="fw-bold text-end">${formatVnd(b.taxAmount)}</td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                }
+            } catch (err) {
+                alert('Lỗi tính thuế: ' + err.message);
+            }
+        }
+
+        document.getElementById('quickCalcForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            triggerQuickCalc();
+        });
+
+        // Xử lý login form
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const errDiv = document.getElementById('loginError');
+            errDiv.classList.add('d-none');
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+
+            try {
+                const res = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    if (data.user.role === 'ADMIN') {
+                        window.location.href = '/admin.html';
+                    } else {
+                        window.location.href = '/dashboard.html';
+                    }
+                } else {
+                    errDiv.innerText = data.message || 'Đăng nhập thất bại!';
+                    errDiv.classList.remove('d-none');
+                }
+            } catch (err) {
+                errDiv.innerText = 'Lỗi kết nối máy chủ!';
+                errDiv.classList.remove('d-none');
+            }
+        });
+
+        // Xử lý register form
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const errDiv = document.getElementById('registerError');
+            errDiv.classList.add('d-none');
+
+            const payload = {
+                username: document.getElementById('regUsername').value,
+                password: document.getElementById('regPassword').value,
+                fullName: document.getElementById('regFullName').value,
+                email: document.getElementById('regEmail').value,
+                phone: document.getElementById('regPhone').value,
+                taxCode: document.getElementById('regTaxCode').value,
+                citizenId: document.getElementById('regCitizenId').value
+            };
+
+            try {
+                const res = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    alert('Đăng ký thành công! Đang chuyển hướng vào hệ thống...');
+                    window.location.href = '/dashboard.html';
+                } else {
+                    errDiv.innerText = data.message || 'Đăng ký thất bại!';
+                    errDiv.classList.remove('d-none');
+                }
+            } catch (err) {
+                errDiv.innerText = 'Lỗi kết nối máy chủ!';
+                errDiv.classList.remove('d-none');
+            }
+        });
+
+        // Khởi chạy khi load trang
+        window.addEventListener('DOMContentLoaded', async () => {
+            triggerQuickCalc();
+            const user = await checkAuth();
+            if (user) {
+                document.getElementById('nav-auth-buttons').classList.add('d-none');
+                document.getElementById('nav-user-info').classList.remove('d-none');
+                document.getElementById('nav-user-name').innerText = `Xin chào, ${user.fullName} (${user.role})`;
+                if (user.role === 'ADMIN') {
+                    document.getElementById('btn-goto-dashboard').href = '/admin.html';
+                    document.getElementById('btn-goto-dashboard').innerText = 'Quản trị Cán bộ thuế';
+                }
+            }
+        });
+    </script>
+</body>
+</html>

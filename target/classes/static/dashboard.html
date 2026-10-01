@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bảng Điều Khiển Người Nộp Thuế - PIT System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="/dashboard.html" id="dash-brand-link">
+                <i class="fa-solid fa-calculator brand-icon"></i> Cổng Thuế TNCN - Bảng Điều Khiển
+            </a>
+            <div class="ms-auto d-flex align-items-center">
+                <span class="text-white me-3" id="user-display-name">
+                    <i class="fa-solid fa-user-circle"></i> Đang tải...
+                </span>
+                <button class="btn btn-outline-light btn-sm" onclick="logout()" id="btn-logout" data-testid="btn-logout">
+                    <i class="fa-solid fa-right-from-bracket"></i> Đăng xuất
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- User Header Card -->
+    <div class="container mt-4">
+        <div class="card bg-white border-0 shadow-sm p-3 mb-4">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h4 class="mb-1 text-primary fw-bold" id="card-fullname">Nguyễn Văn A</h4>
+                    <p class="text-muted mb-0 small">
+                        Mã số thuế: <strong id="card-taxcode" class="text-dark">0123456789</strong> | 
+                        CCCD: <strong id="card-citizenid" class="text-dark">001200012345</strong> | 
+                        Email: <span id="card-email">nguyenvana@gmail.com</span>
+                    </p>
+                </div>
+                <div class="col-md-4 text-md-end mt-2 mt-md-0">
+                    <span class="badge bg-success px-3 py-2 fs-6"><i class="fa-solid fa-circle-check"></i> Đã Xác Thực Thuế Điện Tử</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs: Kê khai thuế & Lịch sử -->
+        <ul class="nav nav-tabs mb-4" id="taxTabs" role="tablist">
+            <li class="nav-item">
+                <button class="nav-link active fw-bold" id="declare-tab" data-bs-toggle="tab" data-bs-target="#declare-pane">
+                    <i class="fa-solid fa-file-signature"></i> 1. Kê Khai & Tính Thuế
+                </button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link fw-bold" id="history-tab" data-bs-toggle="tab" data-bs-target="#history-pane">
+                    <i class="fa-solid fa-list-check"></i> 2. Danh Sách Tờ Khai & Đóng Thuế
+                </button>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="taxTabsContent">
+            <!-- TAB 1: KÊ KHAI & TÍNH THUẾ -->
+            <div class="tab-pane fade show active" id="declare-pane">
+                <div class="row g-4">
+                    <!-- Form kê khai -->
+                    <div class="col-lg-6">
+                        <div class="card h-100">
+                            <div class="card-header bg-white">
+                                <h5 class="card-title text-primary mb-0">
+                                    <i class="fa-solid fa-pen-to-square"></i> Nhập Thông Tin Khai Báo Thuế
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <form id="declarationForm">
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-semibold" for="decYear">Năm kê khai</label>
+                                            <input type="number" class="form-control" id="decYear" data-testid="dec-year" value="2026" min="2020" max="2030" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-semibold" for="decMonth">Tháng (1-12, hoặc 0: Cả năm)</label>
+                                            <select class="form-select" id="decMonth" data-testid="dec-month">
+                                                <option value="1">Tháng 1</option>
+                                                <option value="2">Tháng 2</option>
+                                                <option value="3" selected>Tháng 3</option>
+                                                <option value="4">Tháng 4</option>
+                                                <option value="5">Tháng 5</option>
+                                                <option value="6">Tháng 6</option>
+                                                <option value="7">Tháng 7</option>
+                                                <option value="8">Tháng 8</option>
+                                                <option value="9">Tháng 9</option>
+                                                <option value="10">Tháng 10</option>
+                                                <option value="11">Tháng 11</option>
+                                                <option value="12">Tháng 12</option>
+                                                <option value="0">Quyết toán cả năm</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold" for="decSalary">Tiền lương chính / Lương hợp đồng (VNĐ) <span class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="decSalary" data-testid="dec-salary" value="35000000" min="0" required>
+                                            <span class="input-group-text">VNĐ</span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="decBonus">Tiền thưởng (VNĐ)</label>
+                                            <input type="number" class="form-control" id="decBonus" data-testid="dec-bonus" value="5000000" min="0">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="decOther">Thu nhập chịu thuế khác</label>
+                                            <input type="number" class="form-control" id="decOther" data-testid="dec-other" value="0" min="0">
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="decNonTaxable">Thu nhập miễn thuế</label>
+                                            <input type="number" class="form-control" id="decNonTaxable" data-testid="dec-nontaxable" value="0" min="0">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-semibold" for="decDependents">Số người phụ thuộc</label>
+                                            <input type="number" class="form-control" id="decDependents" data-testid="dec-dependents" value="1" min="0" max="50">
+                                        </div>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label" for="decCharity">Đóng góp từ thiện, nhân đạo (VNĐ)</label>
+                                        <input type="number" class="form-control" id="decCharity" data-testid="dec-charity" value="0" min="0">
+                                    </div>
+                                    <div class="d-flex gap-2">
+                                        <button type="button" class="btn btn-outline-primary w-50" onclick="previewCalc()" id="btn-preview-calc">
+                                            <i class="fa-solid fa-calculator"></i> Tính thử trước
+                                        </button>
+                                        <button type="submit" class="btn btn-success w-50 fw-bold" id="btn-submit-declaration" data-testid="btn-submit-declaration">
+                                            <i class="fa-solid fa-cloud-arrow-up"></i> Nộp Tờ Khai Thuế
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bảng tính toán tự động -->
+                    <div class="col-lg-6">
+                        <div class="card h-100">
+                            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                                <h5 class="card-title text-success mb-0">
+                                    <i class="fa-solid fa-calculator"></i> Bảng Tính Thuế Tự Động
+                                </h5>
+                                <span class="badge bg-primary">Biểu thuế 7 bậc</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="tax-summary-box mb-3 text-center">
+                                    <div class="text-muted">Tổng thuế TNCN phải nộp:</div>
+                                    <div class="tax-amount-highlight" id="lblTaxAmount" data-testid="lbl-tax-amount">0 đ</div>
+                                    <div class="mt-1">
+                                        Thu nhập thực nhận (Net): <strong class="text-success fs-5" id="lblNetIncome">0 đ</strong>
+                                    </div>
+                                </div>
+                                <table class="table table-sm table-striped">
+                                    <tbody>
+                                        <tr>
+                                            <td>Tổng thu nhập trước thuế:</td>
+                                            <td class="text-end fw-bold" id="lblTotalGross">0 đ</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Bảo hiểm bắt buộc (BHXH 8%, BHYT 1.5%, BHTN 1%):</td>
+                                            <td class="text-end text-danger" id="lblTotalInsurance">0 đ</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Giảm trừ bản thân (11.000.000đ/tháng):</td>
+                                            <td class="text-end text-danger" id="lblPersonalDeduction">11.000.000 đ</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Giảm trừ người phụ thuộc (4.400.000đ/người/tháng):</td>
+                                            <td class="text-end text-danger" id="lblDependentDeduction">0 đ</td>
+                                        </tr>
+                                        <tr class="table-primary">
+                                            <td><strong>Thu nhập tính thuế (TNTT):</strong></td>
+                                            <td class="text-end fw-bold text-primary" id="lblAssessedIncome">0 đ</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <h6 class="fw-bold mt-3 mb-2">Chi tiết số thuế theo 7 bậc:</h6>
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-bordered text-center align-middle" id="previewBracketTable">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Bậc</th>
+                                                <th>Thu nhập chịu thuế</th>
+                                                <th>Thuế suất</th>
+                                                <th>Tiền thuế</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="previewBracketTableBody"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: LỊCH SỬ TỜ KHAI & ĐÓNG THUẾ -->
+            <div class="tab-pane fade" id="history-pane">
+                <div class="card">
+                    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                        <h5 class="card-title text-primary mb-0">
+                            <i class="fa-solid fa-clock-rotate-left"></i> Danh Sách Tờ Khai Của Tôi
+                        </h5>
+                        <button class="btn btn-outline-primary btn-sm" onclick="loadMyDeclarations()">
+                            <i class="fa-solid fa-arrows-rotate"></i> Làm mới
+                        </button>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0" id="declarationsTable">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Mã Tờ Khai</th>
+                                        <th>Kỳ Kê Khai</th>
+                                        <th>Tổng Thu Nhập</th>
+                                        <th>Giảm Trừ</th>
+                                        <th>Thu Nhập Tính Thuế</th>
+                                        <th>Thuế Phải Nộp</th>
+                                        <th>Trạng Thái</th>
+                                        <th>Thao Tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="declarationsTableBody">
+                                    <!-- Populated by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Modal (Đóng thuế trực tuyến) -->
+    <div class="modal fade" id="paymentModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title"><i class="fa-solid fa-credit-card"></i> Cổng Đóng Thuế Trực Tuyến</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <p class="text-muted mb-1">Mã tờ khai: <strong id="payDecId">DEC-0000</strong></p>
+                    <div class="mb-3">
+                        <span class="fs-6 text-muted">Số tiền thuế cần thanh toán:</span>
+                        <div class="tax-amount-highlight text-danger" id="payAmount">0 đ</div>
+                    </div>
+
+                    <div class="mb-3 text-start">
+                        <label class="form-label fw-semibold">Phương thức nộp thuế:</label>
+                        <select class="form-select" id="payMethod" data-testid="select-pay-method">
+                            <option value="VNPAY_QR">VNPAY - Quét mã QR</option>
+                            <option value="BANK_TRANSFER">Chuyển khoản Ngân hàng (Internet Banking)</option>
+                            <option value="CREDIT_CARD">Thẻ thanh toán Quốc tế / Nội địa</option>
+                        </select>
+                    </div>
+
+                    <!-- QR code display box -->
+                    <div class="qr-box mb-3 p-2">
+                        <div class="text-center">
+                            <i class="fa-solid fa-qrcode fa-5x text-primary mb-2"></i>
+                            <div class="small text-muted">Mã QR Thanh Toán Thuế Điện Tử</div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-success btn-lg w-100 fw-bold" onclick="executePayment()" id="btn-confirm-payment" data-testid="btn-confirm-payment">
+                        <i class="fa-solid fa-check-circle"></i> Xác Nhận Đóng Thuế
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Receipt Modal (Biên lai điện tử) -->
+    <div class="modal fade" id="receiptModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title"><i class="fa-solid fa-file-invoice"></i> Biên Lai Nộp Thuế Điện Tử</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4" id="receiptContent">
+                    <div class="border p-4 bg-white rounded shadow-sm">
+                        <div class="text-center mb-4">
+                            <h5 class="fw-bold mb-1">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</h5>
+                            <p class="small text-muted mb-2">Độc lập - Tự do - Hạnh phúc</p>
+                            <h4 class="text-primary fw-bold">GIẤY NỘP TIỀN VÀO NGÂN SÁCH NHÀ NƯỚC</h4>
+                            <p class="small text-muted">Mã giao dịch: <strong id="recTxnRef"></strong> | Mã biên lai: <strong id="recId"></strong></p>
+                        </div>
+                        <hr>
+                        <div class="row mb-2">
+                            <div class="col-sm-4 text-muted">Người nộp thuế:</div>
+                            <div class="col-sm-8 fw-bold" id="recFullName"></div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-4 text-muted">Mã số thuế:</div>
+                            <div class="col-sm-8 fw-bold" id="recTaxCode"></div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-4 text-muted">Số tiền đã nộp:</div>
+                            <div class="col-sm-8 text-danger fw-bold fs-5" id="recAmount"></div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-4 text-muted">Phương thức thanh toán:</div>
+                            <div class="col-sm-8" id="recMethod"></div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-4 text-muted">Thời gian xác nhận:</div>
+                            <div class="col-sm-8 text-success fw-bold" id="recTime"></div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-4 text-muted">Trạng thái:</div>
+                            <div class="col-sm-8"><span class="badge bg-success">THÀNH CÔNG (ĐÃ VÀO KBNN)</span></div>
+                        </div>
+                        <div class="text-end mt-4">
+                            <div class="text-muted small">CƠ QUAN THUẾ XÁC NHẬN ĐIỆN TỬ</div>
+                            <div class="fw-bold text-success"><i class="fa-solid fa-stamp fa-2x"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" onclick="window.print()"><i class="fa-solid fa-print"></i> In Biên Lai</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/app.js"></script>
+    <script>
+        let currentUser = null;
+        let selectedDecId = null;
+
+        async function initDashboard() {
+            currentUser = await checkAuth();
+            if (!currentUser) {
+                alert('Vui lòng đăng nhập để truy cập!');
+                window.location.href = '/index.html';
+                return;
+            }
+
+            document.getElementById('user-display-name').innerText = currentUser.fullName;
+            document.getElementById('card-fullname').innerText = currentUser.fullName;
+            document.getElementById('card-taxcode').innerText = currentUser.taxCode || 'Chưa cập nhật';
+            document.getElementById('card-citizenid').innerText = currentUser.citizenId || 'Chưa cập nhật';
+            document.getElementById('card-email').innerText = currentUser.email || '';
+
+            previewCalc();
+            loadMyDeclarations();
+        }
+
+        async function previewCalc() {
+            try {
+                const data = await performQuickCalculate(
+                    document.getElementById('decSalary').value,
+                    document.getElementById('decBonus').value,
+                    document.getElementById('decOther').value,
+                    document.getElementById('decNonTaxable').value,
+                    document.getElementById('decDependents').value,
+                    document.getElementById('decCharity').value
+                );
+
+                document.getElementById('lblTaxAmount').innerText = formatVnd(data.totalTax);
+                document.getElementById('lblNetIncome').innerText = formatVnd(data.netIncome);
+                document.getElementById('lblTotalGross').innerText = formatVnd(data.totalGrossIncome);
+                document.getElementById('lblTotalInsurance').innerText = '-' + formatVnd(data.totalInsurance);
+                document.getElementById('lblPersonalDeduction').innerText = '-' + formatVnd(data.personalDeduction);
+                document.getElementById('lblDependentDeduction').innerText = '-' + formatVnd(data.dependentDeduction);
+                document.getElementById('lblAssessedIncome').innerText = formatVnd(data.assessedIncome);
+
+                const tbody = document.getElementById('previewBracketTableBody');
+                tbody.innerHTML = '';
+                if (data.bracketDetails) {
+                    data.bracketDetails.forEach(b => {
+                        const tr = document.createElement('tr');
+                        if (b.taxAmount > 0) tr.classList.add('table-warning');
+                        tr.innerHTML = `
+                            <td><span class="badge ${b.taxAmount > 0 ? 'bg-danger' : 'bg-secondary'}">Bậc ${b.bracket}</span></td>
+                            <td>${formatVnd(b.incomeInBracket)}</td>
+                            <td>${(b.rate * 100).toFixed(0)}%</td>
+                            <td class="fw-bold text-end">${formatVnd(b.taxAmount)}</td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                }
+            } catch (e) {
+                console.error('Lỗi tính thử:', e);
+            }
+        }
+
+        // Nộp tờ khai thuế
+        document.getElementById('declarationForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const payload = {
+                taxYear: parseInt(document.getElementById('decYear').value),
+                taxMonth: parseInt(document.getElementById('decMonth').value),
+                grossSalary: parseFloat(document.getElementById('decSalary').value) || 0,
+                bonusIncome: parseFloat(document.getElementById('decBonus').value) || 0,
+                otherIncome: parseFloat(document.getElementById('decOther').value) || 0,
+                nonTaxableIncome: parseFloat(document.getElementById('decNonTaxable').value) || 0,
+                dependentCount: parseInt(document.getElementById('decDependents').value) || 0,
+                charityDonation: parseFloat(document.getElementById('decCharity').value) || 0
+            };
+
+            try {
+                const res = await fetch('/api/tax/declare', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    alert('Nộp tờ khai thuế thành công! Mã tờ khai: ' + data.data.id);
+                    // Chuyển sang tab Lịch sử
+                    const historyTab = new bootstrap.Tab(document.getElementById('history-tab'));
+                    historyTab.show();
+                    loadMyDeclarations();
+                } else {
+                    alert('Lỗi nộp tờ khai: ' + data.message);
+                }
+            } catch (err) {
+                alert('Lỗi kết nối máy chủ!');
+            }
+        });
+
+        // Tải danh sách tờ khai của tôi
+        async function loadMyDeclarations() {
+            try {
+                const res = await fetch('/api/tax/my-declarations');
+                const data = await res.json();
+                const tbody = document.getElementById('declarationsTableBody');
+                tbody.innerHTML = '';
+
+                if (res.ok && data.success && data.data) {
+                    if (data.data.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="8" class="text-center text-muted py-4">Chưa có tờ khai nào.</td></tr>';
+                        return;
+                    }
+
+                    data.data.forEach(d => {
+                        const tr = document.createElement('tr');
+                        const isPaid = d.status === 'PAID';
+                        tr.innerHTML = `
+                            <td><strong>${d.id}</strong></td>
+                            <td>${d.taxMonth > 0 ? 'Tháng ' + d.taxMonth + '/' + d.taxYear : 'Năm ' + d.taxYear}</td>
+                            <td>${formatVnd(d.totalGrossIncome)}</td>
+                            <td>${formatVnd(d.totalDeductions)}</td>
+                            <td class="fw-bold">${formatVnd(d.assessedIncome)}</td>
+                            <td class="text-danger fw-bold">${formatVnd(d.taxAmount)}</td>
+                            <td>
+                                <span class="badge ${isPaid ? 'status-badge-paid' : 'status-badge-pending'}">
+                                    ${isPaid ? 'Đã nộp thuế' : 'Chờ đóng thuế'}
+                                </span>
+                            </td>
+                            <td>
+                                ${!isPaid ? 
+                                    `<button class="btn btn-sm btn-success fw-bold" onclick="openPaymentModal('${d.id}', ${d.taxAmount})">
+                                        <i class="fa-solid fa-credit-card"></i> Đóng thuế
+                                     </button>` : 
+                                    `<button class="btn btn-sm btn-outline-primary" onclick="viewReceipt('${d.paymentReceiptId}')">
+                                        <i class="fa-solid fa-receipt"></i> Xem biên lai
+                                     </button>`
+                                }
+                            </td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                }
+            } catch (e) {
+                console.error('Lỗi tải tờ khai:', e);
+            }
+        }
+
+        function openPaymentModal(decId, amount) {
+            selectedDecId = decId;
+            document.getElementById('payDecId').innerText = decId;
+            document.getElementById('payAmount').innerText = formatVnd(amount);
+            const modal = new bootstrap.Modal(document.getElementById('paymentModal'));
+            modal.show();
+        }
+
+        async function executePayment() {
+            if (!selectedDecId) return;
+            const method = document.getElementById('payMethod').value;
+            try {
+                const res = await fetch('/api/tax/pay', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ declarationId: selectedDecId, paymentMethod: method })
+                });
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    bootstrap.Modal.getInstance(document.getElementById('paymentModal')).hide();
+                    alert('Nộp thuế thành công! Biên lai đã được lưu trữ.');
+                    loadMyDeclarations();
+                    viewReceipt(data.receipt.receiptId);
+                } else {
+                    alert('Thanh toán thất bại: ' + data.message);
+                }
+            } catch (err) {
+                alert('Lỗi kết nối máy chủ!');
+            }
+        }
+
+        async function viewReceipt(receiptId) {
+            if (!receiptId) {
+                alert('Không có thông tin biên lai');
+                return;
+            }
+            try {
+                const res = await fetch('/api/tax/receipt/' + receiptId);
+                const data = await res.json();
+                if (res.ok && data.success && data.receipt) {
+                    const r = data.receipt;
+                    document.getElementById('recId').innerText = r.receiptId;
+                    document.getElementById('recTxnRef').innerText = r.transactionRef;
+                    document.getElementById('recFullName').innerText = r.fullName;
+                    document.getElementById('recTaxCode').innerText = r.taxCode;
+                    document.getElementById('recAmount').innerText = formatVnd(r.amount);
+                    document.getElementById('recMethod').innerText = r.paymentMethod;
+                    document.getElementById('recTime').innerText = r.paymentTime;
+
+                    const modal = new bootstrap.Modal(document.getElementById('receiptModal'));
+                    modal.show();
+                } else {
+                    alert('Không tìm thấy biên lai: ' + receiptId);
+                }
+            } catch (e) {
+                alert('Lỗi tải biên lai!');
+            }
+        }
+
+        // Live preview upon changing inputs
+        ['decSalary', 'decBonus', 'decOther', 'decNonTaxable', 'decDependents', 'decCharity'].forEach(id => {
+            document.getElementById(id).addEventListener('input', previewCalc);
+        });
+
+        window.addEventListener('DOMContentLoaded', initDashboard);
+    </script>
+</body>
+</html>

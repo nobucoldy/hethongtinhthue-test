@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DeclarationService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Personal Income Tax System</a> &gt; <a href="index.source.html" class="el_package">com.pit.service</a> &gt; <span class="el_source">DeclarationService.java</span></div><h1>DeclarationService.java</h1><pre class="source lang-java linenums">package com.pit.service;
+
+import com.pit.model.SystemConfig;
+import com.pit.model.TaxCalculationResult;
+import com.pit.model.TaxDeclaration;
+import com.pit.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
+
+@Service
+public class DeclarationService {
+
+<span class="fc" id="L19">    private final Map&lt;String, TaxDeclaration&gt; declarationMap = new ConcurrentHashMap&lt;&gt;();</span>
+    private final TaxCalculatorService taxCalculatorService;
+    private final ConfigService configService;
+
+    @Autowired
+<span class="fc" id="L24">    public DeclarationService(TaxCalculatorService taxCalculatorService, ConfigService configService) {</span>
+<span class="fc" id="L25">        this.taxCalculatorService = taxCalculatorService;</span>
+<span class="fc" id="L26">        this.configService = configService;</span>
+<span class="fc" id="L27">        initSampleDeclarations();</span>
+<span class="fc" id="L28">    }</span>
+
+    private void initSampleDeclarations() {
+        // Tạo vài tờ khai mẫu phục vụ kiểm thử và demo
+<span class="fc" id="L32">        TaxDeclaration d1 = new TaxDeclaration();</span>
+<span class="fc" id="L33">        d1.setId(&quot;DEC-1001&quot;);</span>
+<span class="fc" id="L34">        d1.setUserId(&quot;user-sample-1&quot;);</span>
+<span class="fc" id="L35">        d1.setFullName(&quot;Nguyễn Văn A&quot;);</span>
+<span class="fc" id="L36">        d1.setTaxCode(&quot;0123456789&quot;);</span>
+<span class="fc" id="L37">        d1.setCitizenId(&quot;001200012345&quot;);</span>
+<span class="fc" id="L38">        d1.setTaxYear(2026);</span>
+<span class="fc" id="L39">        d1.setTaxMonth(1);</span>
+<span class="fc" id="L40">        d1.setGrossSalary(25000000.0);</span>
+<span class="fc" id="L41">        d1.setBonusIncome(5000000.0);</span>
+<span class="fc" id="L42">        d1.setOtherIncome(0.0);</span>
+<span class="fc" id="L43">        d1.setNonTaxableIncome(0.0);</span>
+<span class="fc" id="L44">        d1.setDependentCount(1);</span>
+<span class="fc" id="L45">        d1.setCharityDonation(0.0);</span>
+<span class="fc" id="L46">        d1.setTotalGrossIncome(30000000.0);</span>
+<span class="fc" id="L47">        d1.setTaxableIncome(30000000.0);</span>
+        
+<span class="fc" id="L49">        TaxCalculationResult calc1 = taxCalculatorService.calculate(25000000.0, 5000000.0, 0, 0, 1, 0, configService.getConfig());</span>
+<span class="fc" id="L50">        d1.setTotalDeductions(calc1.getTotalDeductions());</span>
+<span class="fc" id="L51">        d1.setAssessedIncome(calc1.getAssessedIncome());</span>
+<span class="fc" id="L52">        d1.setTaxAmount(calc1.getTotalTax());</span>
+<span class="fc" id="L53">        d1.setNetIncome(calc1.getNetIncome());</span>
+<span class="fc" id="L54">        d1.setStatus(&quot;PAID&quot;);</span>
+<span class="fc" id="L55">        d1.setPaymentReceiptId(&quot;REC-88001&quot;);</span>
+<span class="fc" id="L56">        d1.setCreatedAt(&quot;2026-02-10 09:30:00&quot;);</span>
+<span class="fc" id="L57">        declarationMap.put(d1.getId(), d1);</span>
+
+<span class="fc" id="L59">        TaxDeclaration d2 = new TaxDeclaration();</span>
+<span class="fc" id="L60">        d2.setId(&quot;DEC-1002&quot;);</span>
+<span class="fc" id="L61">        d2.setUserId(&quot;user-sample-1&quot;);</span>
+<span class="fc" id="L62">        d2.setFullName(&quot;Nguyễn Văn A&quot;);</span>
+<span class="fc" id="L63">        d2.setTaxCode(&quot;0123456789&quot;);</span>
+<span class="fc" id="L64">        d2.setCitizenId(&quot;001200012345&quot;);</span>
+<span class="fc" id="L65">        d2.setTaxYear(2026);</span>
+<span class="fc" id="L66">        d2.setTaxMonth(2);</span>
+<span class="fc" id="L67">        d2.setGrossSalary(45000000.0);</span>
+<span class="fc" id="L68">        d2.setBonusIncome(0.0);</span>
+<span class="fc" id="L69">        d2.setOtherIncome(0.0);</span>
+<span class="fc" id="L70">        d2.setNonTaxableIncome(0.0);</span>
+<span class="fc" id="L71">        d2.setDependentCount(2);</span>
+<span class="fc" id="L72">        d2.setCharityDonation(1000000.0);</span>
+        
+<span class="fc" id="L74">        TaxCalculationResult calc2 = taxCalculatorService.calculate(45000000.0, 0, 0, 0, 2, 1000000.0, configService.getConfig());</span>
+<span class="fc" id="L75">        d2.setTotalGrossIncome(calc2.getTotalGrossIncome());</span>
+<span class="fc" id="L76">        d2.setTaxableIncome(calc2.getTaxableIncome());</span>
+<span class="fc" id="L77">        d2.setTotalDeductions(calc2.getTotalDeductions());</span>
+<span class="fc" id="L78">        d2.setAssessedIncome(calc2.getAssessedIncome());</span>
+<span class="fc" id="L79">        d2.setTaxAmount(calc2.getTotalTax());</span>
+<span class="fc" id="L80">        d2.setNetIncome(calc2.getNetIncome());</span>
+<span class="fc" id="L81">        d2.setStatus(&quot;PENDING&quot;);</span>
+<span class="fc" id="L82">        d2.setCreatedAt(&quot;2026-03-05 14:15:00&quot;);</span>
+<span class="fc" id="L83">        declarationMap.put(d2.getId(), d2);</span>
+<span class="fc" id="L84">    }</span>
+
+    public synchronized TaxDeclaration createDeclaration(User user, int taxYear, int taxMonth,
+                                                        double grossSalary, double bonusIncome, double otherIncome,
+                                                        double nonTaxableIncome, int dependentCount, double charityDonation) {
+<span class="fc" id="L89">        TaxCalculationResult calc = taxCalculatorService.calculate(</span>
+<span class="fc" id="L90">                grossSalary, bonusIncome, otherIncome, nonTaxableIncome, dependentCount, charityDonation, configService.getConfig()</span>
+        );
+
+<span class="fc" id="L93">        TaxDeclaration dec = new TaxDeclaration();</span>
+<span class="fc" id="L94">        dec.setId(&quot;DEC-&quot; + System.currentTimeMillis() % 1000000);</span>
+<span class="fc" id="L95">        dec.setUserId(user.getId());</span>
+<span class="fc" id="L96">        dec.setFullName(user.getFullName());</span>
+<span class="fc" id="L97">        dec.setTaxCode(user.getTaxCode());</span>
+<span class="fc" id="L98">        dec.setCitizenId(user.getCitizenId());</span>
+<span class="fc" id="L99">        dec.setTaxYear(taxYear);</span>
+<span class="fc" id="L100">        dec.setTaxMonth(taxMonth);</span>
+<span class="fc" id="L101">        dec.setGrossSalary(grossSalary);</span>
+<span class="fc" id="L102">        dec.setBonusIncome(bonusIncome);</span>
+<span class="fc" id="L103">        dec.setOtherIncome(otherIncome);</span>
+<span class="fc" id="L104">        dec.setNonTaxableIncome(nonTaxableIncome);</span>
+<span class="fc" id="L105">        dec.setDependentCount(dependentCount);</span>
+<span class="fc" id="L106">        dec.setCharityDonation(charityDonation);</span>
+<span class="fc" id="L107">        dec.setTotalGrossIncome(calc.getTotalGrossIncome());</span>
+<span class="fc" id="L108">        dec.setTaxableIncome(calc.getTaxableIncome());</span>
+<span class="fc" id="L109">        dec.setTotalDeductions(calc.getTotalDeductions());</span>
+<span class="fc" id="L110">        dec.setAssessedIncome(calc.getAssessedIncome());</span>
+<span class="fc" id="L111">        dec.setTaxAmount(calc.getTotalTax());</span>
+<span class="fc" id="L112">        dec.setNetIncome(calc.getNetIncome());</span>
+<span class="fc bfc" id="L113" title="All 2 branches covered.">        dec.setStatus(calc.getTotalTax() == 0 ? &quot;PAID&quot; : &quot;PENDING&quot;); // Nếu không phải nộp thuế thì hoàn tất luôn</span>
+<span class="fc" id="L114">        dec.setCreatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd HH:mm:ss&quot;)));</span>
+
+<span class="fc" id="L116">        declarationMap.put(dec.getId(), dec);</span>
+<span class="fc" id="L117">        return dec;</span>
+    }
+
+    public synchronized Optional&lt;TaxDeclaration&gt; findById(String id) {
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">        if (id == null) return Optional.empty();</span>
+<span class="fc" id="L122">        return Optional.ofNullable(declarationMap.get(id));</span>
+    }
+
+    public synchronized List&lt;TaxDeclaration&gt; getDeclarationsByUser(String userId, String username) {
+<span class="nc" id="L126">        return declarationMap.values().stream()</span>
+<span class="nc bnc" id="L127" title="All 6 branches missed.">                .filter(d -&gt; (userId != null &amp;&amp; userId.equals(d.getUserId())) ||</span>
+<span class="nc bnc" id="L128" title="All 4 branches missed.">                             (username != null &amp;&amp; (&quot;nguyenvana&quot;.equalsIgnoreCase(username) &amp;&amp; &quot;user-sample-1&quot;.equals(d.getUserId()))))</span>
+<span class="nc" id="L129">                .sorted((a, b) -&gt; b.getCreatedAt().compareTo(a.getCreatedAt()))</span>
+<span class="nc" id="L130">                .collect(Collectors.toList());</span>
+    }
+
+    public synchronized List&lt;TaxDeclaration&gt; getAllDeclarations(Integer taxYear, Integer taxMonth, String status, String keyword) {
+<span class="fc" id="L134">        return declarationMap.values().stream()</span>
+<span class="fc" id="L135">                .filter(d -&gt; {</span>
+<span class="pc bpc" id="L136" title="2 of 6 branches missed.">                    if (taxYear != null &amp;&amp; taxYear &gt; 0 &amp;&amp; d.getTaxYear() != taxYear) return false;</span>
+<span class="pc bpc" id="L137" title="5 of 6 branches missed.">                    if (taxMonth != null &amp;&amp; taxMonth &gt; 0 &amp;&amp; d.getTaxMonth() != taxMonth) return false;</span>
+<span class="pc bpc" id="L138" title="2 of 8 branches missed.">                    if (status != null &amp;&amp; !status.isEmpty() &amp;&amp; !&quot;ALL&quot;.equalsIgnoreCase(status) &amp;&amp; !status.equalsIgnoreCase(d.getStatus())) return false;</span>
+<span class="pc bpc" id="L139" title="1 of 4 branches missed.">                    if (keyword != null &amp;&amp; !keyword.trim().isEmpty()) {</span>
+<span class="fc" id="L140">                        String kw = keyword.trim().toLowerCase();</span>
+<span class="pc bpc" id="L141" title="2 of 4 branches missed.">                        boolean matchName = d.getFullName() != null &amp;&amp; d.getFullName().toLowerCase().contains(kw);</span>
+<span class="pc bpc" id="L142" title="2 of 4 branches missed.">                        boolean matchTaxCode = d.getTaxCode() != null &amp;&amp; d.getTaxCode().contains(kw);</span>
+<span class="pc bpc" id="L143" title="2 of 4 branches missed.">                        boolean matchCitizenId = d.getCitizenId() != null &amp;&amp; d.getCitizenId().contains(kw);</span>
+<span class="pc bpc" id="L144" title="2 of 4 branches missed.">                        boolean matchId = d.getId() != null &amp;&amp; d.getId().toLowerCase().contains(kw);</span>
+<span class="pc bpc" id="L145" title="6 of 8 branches missed.">                        return matchName || matchTaxCode || matchCitizenId || matchId;</span>
+                    }
+<span class="fc" id="L147">                    return true;</span>
+                })
+<span class="fc" id="L149">                .sorted((a, b) -&gt; b.getCreatedAt().compareTo(a.getCreatedAt()))</span>
+<span class="fc" id="L150">                .collect(Collectors.toList());</span>
+    }
+
+    public synchronized void updateStatus(String declarationId, String status, String receiptId) {
+<span class="fc" id="L154">        TaxDeclaration dec = declarationMap.get(declarationId);</span>
+<span class="pc bpc" id="L155" title="1 of 2 branches missed.">        if (dec != null) {</span>
+<span class="fc" id="L156">            dec.setStatus(status);</span>
+<span class="pc bpc" id="L157" title="1 of 2 branches missed.">            if (receiptId != null) {</span>
+<span class="fc" id="L158">                dec.setPaymentReceiptId(receiptId);</span>
+            }
+        }
+<span class="fc" id="L161">    }</span>
+
+    /**
+     * Xuất dữ liệu tờ khai thuế dạng CSV báo cáo quyết toán (hỗ trợ UTF-8)
+     */
+    public synchronized String exportToCsv(Integer year, Integer month, String status) {
+<span class="fc" id="L167">        List&lt;TaxDeclaration&gt; list = getAllDeclarations(year, month, status, null);</span>
+<span class="fc" id="L168">        StringBuilder sb = new StringBuilder();</span>
+        // BOM cho Excel mở tiếng Việt không lỗi font
+<span class="fc" id="L170">        sb.append(&quot;\uFEFF&quot;);</span>
+<span class="fc" id="L171">        sb.append(&quot;Mã Tờ Khai,Họ và Tên,Mã Số Thuế,CCCD,Năm,Tháng,Tổng Thu Nhập,Giảm Trừ,Thu Nhập Tính Thuế,Thuế TNCN,Thực Nhận,Trạng Thái,Ngày Khai\n&quot;);</span>
+<span class="fc bfc" id="L172" title="All 2 branches covered.">        for (TaxDeclaration d : list) {</span>
+<span class="fc" id="L173">            sb.append(String.format(&quot;\&quot;%s\&quot;,\&quot;%s\&quot;,\&quot;%s\&quot;,\&quot;%s\&quot;,%d,%d,%.0f,%.0f,%.0f,%.0f,%.0f,\&quot;%s\&quot;,\&quot;%s\&quot;\n&quot;,</span>
+<span class="fc" id="L174">                    d.getId(),</span>
+<span class="pc bpc" id="L175" title="1 of 2 branches missed.">                    d.getFullName() != null ? d.getFullName() : &quot;&quot;,</span>
+<span class="pc bpc" id="L176" title="1 of 2 branches missed.">                    d.getTaxCode() != null ? d.getTaxCode() : &quot;&quot;,</span>
+<span class="pc bpc" id="L177" title="1 of 2 branches missed.">                    d.getCitizenId() != null ? d.getCitizenId() : &quot;&quot;,</span>
+<span class="fc" id="L178">                    d.getTaxYear(),</span>
+<span class="fc" id="L179">                    d.getTaxMonth(),</span>
+<span class="fc" id="L180">                    d.getTotalGrossIncome(),</span>
+<span class="fc" id="L181">                    d.getTotalDeductions(),</span>
+<span class="fc" id="L182">                    d.getAssessedIncome(),</span>
+<span class="fc" id="L183">                    d.getTaxAmount(),</span>
+<span class="fc" id="L184">                    d.getNetIncome(),</span>
+<span class="fc" id="L185">                    d.getStatus(),</span>
+<span class="fc" id="L186">                    d.getCreatedAt()</span>
+            ));
+<span class="fc" id="L188">        }</span>
+<span class="fc" id="L189">        return sb.toString();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
