@@ -37,7 +37,7 @@ java -jar target\tax-system-1.0.0.jar
 ```
 
 Sau khi khởi động, truy cập trình duyệt tại địa chỉ:
-👉 **`http://localhost:8080`**
+**`http://localhost:8080`**
 
 ---
 
