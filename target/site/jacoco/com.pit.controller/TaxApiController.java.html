@@ -29,10 +29,10 @@ public class TaxApiController {
     private final ConfigService configService;
 
     @Autowired
-    public TaxApiController(TaxCalculatorService taxCalculatorService,
+<span class="fc" id="L32">    public TaxApiController(TaxCalculatorService taxCalculatorService,</span>
                             DeclarationService declarationService,
                             PaymentService paymentService,
-<span class="fc" id="L35">                            ConfigService configService) {</span>
+                            ConfigService configService) {
 <span class="fc" id="L36">        this.taxCalculatorService = taxCalculatorService;</span>
 <span class="fc" id="L37">        this.declarationService = declarationService;</span>
 <span class="fc" id="L38">        this.paymentService = paymentService;</span>
@@ -108,7 +108,7 @@ public class TaxApiController {
             }
 
 <span class="fc" id="L110">            TaxDeclaration dec = declarationService.createDeclaration(</span>
-                    user, taxYear, taxMonth, grossSalary, bonusIncome, otherIncome, nonTaxableIncome, dependentCount, charityDonation
+<span class="fc" id="L111">                    user, taxYear, taxMonth, grossSalary, bonusIncome, otherIncome, nonTaxableIncome, dependentCount, charityDonation</span>
             );
 
 <span class="fc" id="L114">            Map&lt;String, Object&gt; resp = new HashMap&lt;&gt;();</span>

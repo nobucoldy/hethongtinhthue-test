@@ -13,8 +13,8 @@ public class SystemConfig {
     private List&lt;TaxBracket&gt; brackets;       // 7 bậc thuế lũy tiến từng phần
 
 <span class="fc" id="L15">    public SystemConfig() {</span>
-<span class="fc" id="L16">        this.personalDeduction = 11000000.0;</span>
-<span class="fc" id="L17">        this.dependentDeduction = 4400000.0;</span>
+<span class="fc" id="L16">        this.personalDeduction = 15500000.0; // 15.5 triệu đồng/tháng (Văn bản 112/VBHN-VPQH)</span>
+<span class="fc" id="L17">        this.dependentDeduction = 6200000.0;  // 6.2 triệu đồng/tháng/người (Văn bản 112/VBHN-VPQH)</span>
 <span class="fc" id="L18">        this.bhxhRate = 0.08;</span>
 <span class="fc" id="L19">        this.bhytRate = 0.015;</span>
 <span class="fc" id="L20">        this.bhtnRate = 0.01;</span>
@@ -24,35 +24,33 @@ public class SystemConfig {
 
     public static List&lt;TaxBracket&gt; initDefaultBrackets() {
 <span class="fc" id="L26">        List&lt;TaxBracket&gt; list = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L27">        list.add(new TaxBracket(1, 0.0, 5000000.0, 0.05, 0.0, &quot;Đến 5 triệu VNĐ&quot;));</span>
-<span class="fc" id="L28">        list.add(new TaxBracket(2, 5000000.0, 10000000.0, 0.10, 250000.0, &quot;Trên 5 đến 10 triệu VNĐ&quot;));</span>
-<span class="fc" id="L29">        list.add(new TaxBracket(3, 10000000.0, 18000000.0, 0.15, 750000.0, &quot;Trên 10 đến 18 triệu VNĐ&quot;));</span>
-<span class="fc" id="L30">        list.add(new TaxBracket(4, 18000000.0, 32000000.0, 0.20, 1650000.0, &quot;Trên 18 đến 32 triệu VNĐ&quot;));</span>
-<span class="fc" id="L31">        list.add(new TaxBracket(5, 32000000.0, 52000000.0, 0.25, 3250000.0, &quot;Trên 32 đến 52 triệu VNĐ&quot;));</span>
-<span class="fc" id="L32">        list.add(new TaxBracket(6, 52000000.0, 80000000.0, 0.30, 5850000.0, &quot;Trên 52 đến 80 triệu VNĐ&quot;));</span>
-<span class="fc" id="L33">        list.add(new TaxBracket(7, 80000000.0, Double.MAX_VALUE, 0.35, 9850000.0, &quot;Trên 80 triệu VNĐ&quot;));</span>
-<span class="fc" id="L34">        return list;</span>
+<span class="fc" id="L27">        list.add(new TaxBracket(1, 0.0, 10000000.0, 0.05, 0.0, &quot;Đến 10 triệu VNĐ&quot;));</span>
+<span class="fc" id="L28">        list.add(new TaxBracket(2, 10000000.0, 30000000.0, 0.10, 500000.0, &quot;Trên 10 đến 30 triệu VNĐ&quot;));</span>
+<span class="fc" id="L29">        list.add(new TaxBracket(3, 30000000.0, 60000000.0, 0.20, 3500000.0, &quot;Trên 30 đến 60 triệu VNĐ&quot;));</span>
+<span class="fc" id="L30">        list.add(new TaxBracket(4, 60000000.0, 100000000.0, 0.30, 9500000.0, &quot;Trên 60 đến 100 triệu VNĐ&quot;));</span>
+<span class="fc" id="L31">        list.add(new TaxBracket(5, 100000000.0, Double.MAX_VALUE, 0.35, 14500000.0, &quot;Trên 100 triệu VNĐ&quot;));</span>
+<span class="fc" id="L32">        return list;</span>
     }
 
-<span class="fc" id="L37">    public double getPersonalDeduction() { return personalDeduction; }</span>
-<span class="fc" id="L38">    public void setPersonalDeduction(double personalDeduction) { this.personalDeduction = personalDeduction; }</span>
+<span class="fc" id="L35">    public double getPersonalDeduction() { return personalDeduction; }</span>
+<span class="fc" id="L36">    public void setPersonalDeduction(double personalDeduction) { this.personalDeduction = personalDeduction; }</span>
 
-<span class="fc" id="L40">    public double getDependentDeduction() { return dependentDeduction; }</span>
-<span class="fc" id="L41">    public void setDependentDeduction(double dependentDeduction) { this.dependentDeduction = dependentDeduction; }</span>
+<span class="fc" id="L38">    public double getDependentDeduction() { return dependentDeduction; }</span>
+<span class="fc" id="L39">    public void setDependentDeduction(double dependentDeduction) { this.dependentDeduction = dependentDeduction; }</span>
 
-<span class="fc" id="L43">    public double getBhxhRate() { return bhxhRate; }</span>
-<span class="fc" id="L44">    public void setBhxhRate(double bhxhRate) { this.bhxhRate = bhxhRate; }</span>
+<span class="fc" id="L41">    public double getBhxhRate() { return bhxhRate; }</span>
+<span class="fc" id="L42">    public void setBhxhRate(double bhxhRate) { this.bhxhRate = bhxhRate; }</span>
 
-<span class="fc" id="L46">    public double getBhytRate() { return bhytRate; }</span>
-<span class="fc" id="L47">    public void setBhytRate(double bhytRate) { this.bhytRate = bhytRate; }</span>
+<span class="fc" id="L44">    public double getBhytRate() { return bhytRate; }</span>
+<span class="fc" id="L45">    public void setBhytRate(double bhytRate) { this.bhytRate = bhytRate; }</span>
 
-<span class="fc" id="L49">    public double getBhtnRate() { return bhtnRate; }</span>
-<span class="fc" id="L50">    public void setBhtnRate(double bhtnRate) { this.bhtnRate = bhtnRate; }</span>
+<span class="fc" id="L47">    public double getBhtnRate() { return bhtnRate; }</span>
+<span class="fc" id="L48">    public void setBhtnRate(double bhtnRate) { this.bhtnRate = bhtnRate; }</span>
 
-<span class="fc" id="L52">    public double getInsuranceBaseSalaryCap() { return insuranceBaseSalaryCap; }</span>
-<span class="fc" id="L53">    public void setInsuranceBaseSalaryCap(double insuranceBaseSalaryCap) { this.insuranceBaseSalaryCap = insuranceBaseSalaryCap; }</span>
+<span class="fc" id="L50">    public double getInsuranceBaseSalaryCap() { return insuranceBaseSalaryCap; }</span>
+<span class="fc" id="L51">    public void setInsuranceBaseSalaryCap(double insuranceBaseSalaryCap) { this.insuranceBaseSalaryCap = insuranceBaseSalaryCap; }</span>
 
-<span class="fc" id="L55">    public List&lt;TaxBracket&gt; getBrackets() { return brackets; }</span>
-<span class="fc" id="L56">    public void setBrackets(List&lt;TaxBracket&gt; brackets) { this.brackets = brackets; }</span>
+<span class="fc" id="L53">    public List&lt;TaxBracket&gt; getBrackets() { return brackets; }</span>
+<span class="fc" id="L54">    public void setBrackets(List&lt;TaxBracket&gt; brackets) { this.brackets = brackets; }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

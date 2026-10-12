@@ -119,7 +119,7 @@ public class TaxCalculatorService {
         result.setBracketDetails(details);
         result.setTotalTax(totalTax);
         result.setNetIncome(totalGross - totalInsurance - totalTax);
-        result.setCalculationMethod("Biểu thuế lũy tiến từng phần (7 bậc)");
+        result.setCalculationMethod("Biểu thuế lũy tiến từng phần (5 bậc - Luật mới)");
 
         return result;
     }
@@ -141,24 +141,20 @@ public class TaxCalculatorService {
     }
 
     /**
-     * Tính thuế bằng công thức rút gọn để đối chiếu kiểm tra
+     * Tính thuế bằng công thức rút gọn theo 5 bậc mới (Văn bản 112/VBHN-VPQH)
      */
     public double calculateQuickFormula(double assessedIncome) {
         if (assessedIncome <= 0) return 0.0;
-        if (assessedIncome <= 5000000.0) {
+        if (assessedIncome <= 10000000.0) {
             return Math.round(assessedIncome * 0.05);
-        } else if (assessedIncome <= 10000000.0) {
-            return Math.round(assessedIncome * 0.10 - 250000.0);
-        } else if (assessedIncome <= 18000000.0) {
-            return Math.round(assessedIncome * 0.15 - 750000.0);
-        } else if (assessedIncome <= 32000000.0) {
-            return Math.round(assessedIncome * 0.20 - 1650000.0);
-        } else if (assessedIncome <= 52000000.0) {
-            return Math.round(assessedIncome * 0.25 - 3250000.0);
-        } else if (assessedIncome <= 80000000.0) {
-            return Math.round(assessedIncome * 0.30 - 5850000.0);
+        } else if (assessedIncome <= 30000000.0) {
+            return Math.round(assessedIncome * 0.10 - 500000.0);
+        } else if (assessedIncome <= 60000000.0) {
+            return Math.round(assessedIncome * 0.20 - 3500000.0);
+        } else if (assessedIncome <= 100000000.0) {
+            return Math.round(assessedIncome * 0.30 - 9500000.0);
         } else {
-            return Math.round(assessedIncome * 0.35 - 9850000.0);
+            return Math.round(assessedIncome * 0.35 - 14500000.0);
         }
     }
 }

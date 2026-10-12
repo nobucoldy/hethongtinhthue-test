@@ -13,11 +13,11 @@ public class UserService {
 <span class="fc" id="L13">    public UserService() {</span>
         // Khởi tạo tài khoản mẫu
 <span class="fc" id="L15">        User admin = new User(UUID.randomUUID().toString(), &quot;admin&quot;, &quot;Admin@123&quot;, &quot;Nguyễn Quản Trị&quot;,</span>
-                &quot;admin@gdt.gov.vn&quot;, &quot;0901234567&quot;, &quot;0000000001&quot;, &quot;001090000001&quot;, &quot;ADMIN&quot;);
+<span class="fc" id="L16">                &quot;admin@gdt.gov.vn&quot;, &quot;0901234567&quot;, &quot;0000000001&quot;, &quot;001090000001&quot;, &quot;ADMIN&quot;);</span>
 <span class="fc" id="L17">        User user1 = new User(UUID.randomUUID().toString(), &quot;nguyenvana&quot;, &quot;User@123&quot;, &quot;Nguyễn Văn A&quot;,</span>
-                &quot;nguyenvana@gmail.com&quot;, &quot;0912345678&quot;, &quot;0123456789&quot;, &quot;001200012345&quot;, &quot;TAXPAYER&quot;);
+<span class="fc" id="L18">                &quot;nguyenvana@gmail.com&quot;, &quot;0912345678&quot;, &quot;0123456789&quot;, &quot;001200012345&quot;, &quot;TAXPAYER&quot;);</span>
 <span class="fc" id="L19">        User user2 = new User(UUID.randomUUID().toString(), &quot;tranthib&quot;, &quot;User@123&quot;, &quot;Trần Thị B&quot;,</span>
-                &quot;tranthib@gmail.com&quot;, &quot;0987654321&quot;, &quot;0987654321&quot;, &quot;001200098765&quot;, &quot;TAXPAYER&quot;);
+<span class="fc" id="L20">                &quot;tranthib@gmail.com&quot;, &quot;0987654321&quot;, &quot;0987654321&quot;, &quot;001200098765&quot;, &quot;TAXPAYER&quot;);</span>
 
 <span class="fc" id="L22">        userMap.put(admin.getUsername().toLowerCase(), admin);</span>
 <span class="fc" id="L23">        userMap.put(user1.getUsername().toLowerCase(), user1);</span>
@@ -42,7 +42,7 @@ public class UserService {
 <span class="fc" id="L42">            throw new IllegalArgumentException(&quot;Tên đăng nhập '&quot; + username + &quot;' đã tồn tại trên hệ thống!&quot;);</span>
         }
 <span class="fc" id="L44">        User newUser = new User(UUID.randomUUID().toString(), username, password, fullName,</span>
-                email, phone, taxCode, citizenId, &quot;TAXPAYER&quot;);
+<span class="fc" id="L45">                email, phone, taxCode, citizenId, &quot;TAXPAYER&quot;);</span>
 <span class="fc" id="L46">        userMap.put(username.toLowerCase(), newUser);</span>
 <span class="fc" id="L47">        return newUser;</span>
     }
@@ -61,7 +61,7 @@ public class UserService {
 <span class="fc bfc" id="L61" title="All 2 branches covered.">            if (&quot;TAXPAYER&quot;.equalsIgnoreCase(u.getRole())) {</span>
 <span class="fc" id="L62">                list.add(u);</span>
             }
-<span class="fc" id="L64">        }</span>
+        }
 <span class="fc" id="L65">        return list;</span>
     }
 }

@@ -96,7 +96,7 @@ public class AdminApiControllerTest {
         // Reset về mặc định
         ResponseEntity<?> resetResp = adminApiController.resetConfig(session);
         assertEquals(200, resetResp.getStatusCodeValue());
-        assertEquals(11000000.0, configService.getConfig().getPersonalDeduction());
+        assertEquals(15500000.0, configService.getConfig().getPersonalDeduction());
     }
 
     @Test

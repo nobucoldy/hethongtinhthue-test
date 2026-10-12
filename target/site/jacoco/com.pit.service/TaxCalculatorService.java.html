@@ -90,36 +90,36 @@ import java.util.List;
 <span class="fc" id="L90">                    details.add(new BracketDetail(</span>
 <span class="fc" id="L91">                            b.getBracketOrder(),</span>
 <span class="fc" id="L92">                            b.getDescription(),</span>
-                            incomeInThisBracket,
+<span class="fc" id="L93">                            incomeInThisBracket,</span>
 <span class="fc" id="L94">                            b.getTaxRate(),</span>
-                            taxForThisBracket
+<span class="fc" id="L95">                            taxForThisBracket</span>
                     ));
 <span class="fc" id="L97">                } else {</span>
 <span class="fc" id="L98">                    details.add(new BracketDetail(</span>
 <span class="fc" id="L99">                            b.getBracketOrder(),</span>
 <span class="fc" id="L100">                            b.getDescription(),</span>
-                            0.0,
+<span class="fc" id="L101">                            0.0,</span>
 <span class="fc" id="L102">                            b.getTaxRate(),</span>
-                            0.0
+<span class="fc" id="L103">                            0.0</span>
                     ));
                 }
-<span class="fc" id="L106">            }</span>
-        } else {
+            }
+<span class="fc" id="L107">        } else {</span>
 <span class="fc bfc" id="L108" title="All 2 branches covered.">            for (TaxBracket b : brackets) {</span>
 <span class="fc" id="L109">                details.add(new BracketDetail(</span>
 <span class="fc" id="L110">                        b.getBracketOrder(),</span>
 <span class="fc" id="L111">                        b.getDescription(),</span>
-                        0.0,
+<span class="fc" id="L112">                        0.0,</span>
 <span class="fc" id="L113">                        b.getTaxRate(),</span>
-                        0.0
+<span class="fc" id="L114">                        0.0</span>
                 ));
-<span class="fc" id="L116">            }</span>
+            }
         }
 
 <span class="fc" id="L119">        result.setBracketDetails(details);</span>
 <span class="fc" id="L120">        result.setTotalTax(totalTax);</span>
 <span class="fc" id="L121">        result.setNetIncome(totalGross - totalInsurance - totalTax);</span>
-<span class="fc" id="L122">        result.setCalculationMethod(&quot;Biểu thuế lũy tiến từng phần (7 bậc)&quot;);</span>
+<span class="fc" id="L122">        result.setCalculationMethod(&quot;Biểu thuế lũy tiến từng phần (5 bậc - Luật mới)&quot;);</span>
 
 <span class="fc" id="L124">        return result;</span>
     }
@@ -136,29 +136,25 @@ import java.util.List;
 <span class="fc" id="L136">                double incomeInThisBracket = Math.min(assessedIncome, b.getMaxIncome()) - b.getMinIncome();</span>
 <span class="fc" id="L137">                totalTax += Math.round(incomeInThisBracket * b.getTaxRate());</span>
             }
-<span class="fc" id="L139">        }</span>
+        }
 <span class="fc" id="L140">        return totalTax;</span>
     }
 
     /**
-     * Tính thuế bằng công thức rút gọn để đối chiếu kiểm tra
+     * Tính thuế bằng công thức rút gọn theo 5 bậc mới (Văn bản 112/VBHN-VPQH)
      */
     public double calculateQuickFormula(double assessedIncome) {
 <span class="fc bfc" id="L147" title="All 2 branches covered.">        if (assessedIncome &lt;= 0) return 0.0;</span>
-<span class="fc bfc" id="L148" title="All 2 branches covered.">        if (assessedIncome &lt;= 5000000.0) {</span>
+<span class="fc bfc" id="L148" title="All 2 branches covered.">        if (assessedIncome &lt;= 10000000.0) {</span>
 <span class="fc" id="L149">            return Math.round(assessedIncome * 0.05);</span>
-<span class="fc bfc" id="L150" title="All 2 branches covered.">        } else if (assessedIncome &lt;= 10000000.0) {</span>
-<span class="fc" id="L151">            return Math.round(assessedIncome * 0.10 - 250000.0);</span>
-<span class="fc bfc" id="L152" title="All 2 branches covered.">        } else if (assessedIncome &lt;= 18000000.0) {</span>
-<span class="fc" id="L153">            return Math.round(assessedIncome * 0.15 - 750000.0);</span>
-<span class="fc bfc" id="L154" title="All 2 branches covered.">        } else if (assessedIncome &lt;= 32000000.0) {</span>
-<span class="fc" id="L155">            return Math.round(assessedIncome * 0.20 - 1650000.0);</span>
-<span class="fc bfc" id="L156" title="All 2 branches covered.">        } else if (assessedIncome &lt;= 52000000.0) {</span>
-<span class="fc" id="L157">            return Math.round(assessedIncome * 0.25 - 3250000.0);</span>
-<span class="fc bfc" id="L158" title="All 2 branches covered.">        } else if (assessedIncome &lt;= 80000000.0) {</span>
-<span class="fc" id="L159">            return Math.round(assessedIncome * 0.30 - 5850000.0);</span>
+<span class="fc bfc" id="L150" title="All 2 branches covered.">        } else if (assessedIncome &lt;= 30000000.0) {</span>
+<span class="fc" id="L151">            return Math.round(assessedIncome * 0.10 - 500000.0);</span>
+<span class="fc bfc" id="L152" title="All 2 branches covered.">        } else if (assessedIncome &lt;= 60000000.0) {</span>
+<span class="fc" id="L153">            return Math.round(assessedIncome * 0.20 - 3500000.0);</span>
+<span class="fc bfc" id="L154" title="All 2 branches covered.">        } else if (assessedIncome &lt;= 100000000.0) {</span>
+<span class="fc" id="L155">            return Math.round(assessedIncome * 0.30 - 9500000.0);</span>
         } else {
-<span class="fc" id="L161">            return Math.round(assessedIncome * 0.35 - 9850000.0);</span>
+<span class="fc" id="L157">            return Math.round(assessedIncome * 0.35 - 14500000.0);</span>
         }
     }
 }

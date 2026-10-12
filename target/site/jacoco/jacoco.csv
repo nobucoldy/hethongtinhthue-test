@@ -1,5 +1,5 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
-Personal Income Tax System,com.pit.model,SystemConfig,0,163,0,0,0,32,0,16,0,16
+Personal Income Tax System,com.pit.model,SystemConfig,0,139,0,0,0,30,0,16,0,16
 Personal Income Tax System,com.pit.model,User,0,96,0,0,0,30,0,20,0,20
 Personal Income Tax System,com.pit.model,TaxDeclaration,0,166,0,0,0,48,0,45,0,45
 Personal Income Tax System,com.pit.model,PaymentReceipt,0,109,0,0,0,34,0,22,0,22
@@ -7,12 +7,12 @@ Personal Income Tax System,com.pit.model,TaxCalculationResult.BracketDetail,3,53
 Personal Income Tax System,com.pit.model,TaxCalculationResult,0,148,0,0,0,42,0,41,0,41
 Personal Income Tax System,com.pit.model,TaxBracket,0,66,0,0,0,21,0,14,0,14
 Personal Income Tax System,com.pit,PitApplication,26,0,0,0,9,0,2,0,2,0
-Personal Income Tax System,com.pit.service,DeclarationService,71,578,40,34,5,126,34,15,3,9
-Personal Income Tax System,com.pit.service,TaxCalculatorService,2,407,2,32,1,91,2,19,0,4
-Personal Income Tax System,com.pit.service,UserService,20,165,3,11,4,26,4,10,2,5
+Personal Income Tax System,com.pit.service,DeclarationService,72,577,40,34,5,125,34,15,3,9
+Personal Income Tax System,com.pit.service,TaxCalculatorService,2,383,2,28,1,91,2,17,0,4
+Personal Income Tax System,com.pit.service,UserService,20,165,3,11,4,29,4,10,2,5
 Personal Income Tax System,com.pit.service,ConfigService,0,66,6,6,0,13,6,4,0,4
-Personal Income Tax System,com.pit.service,PaymentService,5,134,3,7,0,31,3,7,0,5
+Personal Income Tax System,com.pit.service,PaymentService,5,134,3,7,0,33,3,7,0,5
 Personal Income Tax System,com.pit.util,ValidationUtil,3,131,6,38,1,15,7,26,1,10
 Personal Income Tax System,com.pit.controller,AdminApiController,52,323,11,21,10,62,11,15,0,10
 Personal Income Tax System,com.pit.controller,AuthController,58,291,9,15,9,61,9,10,0,7
-Personal Income Tax System,com.pit.controller,TaxApiController,119,347,15,23,26,73,15,13,1,8
+Personal Income Tax System,com.pit.controller,TaxApiController,119,347,15,23,26,74,15,13,1,8

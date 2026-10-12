@@ -13,8 +13,8 @@ public class SystemConfig {
     private List<TaxBracket> brackets;       // 7 bậc thuế lũy tiến từng phần
 
     public SystemConfig() {
-        this.personalDeduction = 11000000.0;
-        this.dependentDeduction = 4400000.0;
+        this.personalDeduction = 15500000.0; // 15.5 triệu đồng/tháng (Văn bản 112/VBHN-VPQH)
+        this.dependentDeduction = 6200000.0;  // 6.2 triệu đồng/tháng/người (Văn bản 112/VBHN-VPQH)
         this.bhxhRate = 0.08;
         this.bhytRate = 0.015;
         this.bhtnRate = 0.01;
@@ -24,13 +24,11 @@ public class SystemConfig {
 
     public static List<TaxBracket> initDefaultBrackets() {
         List<TaxBracket> list = new ArrayList<>();
-        list.add(new TaxBracket(1, 0.0, 5000000.0, 0.05, 0.0, "Đến 5 triệu VNĐ"));
-        list.add(new TaxBracket(2, 5000000.0, 10000000.0, 0.10, 250000.0, "Trên 5 đến 10 triệu VNĐ"));
-        list.add(new TaxBracket(3, 10000000.0, 18000000.0, 0.15, 750000.0, "Trên 10 đến 18 triệu VNĐ"));
-        list.add(new TaxBracket(4, 18000000.0, 32000000.0, 0.20, 1650000.0, "Trên 18 đến 32 triệu VNĐ"));
-        list.add(new TaxBracket(5, 32000000.0, 52000000.0, 0.25, 3250000.0, "Trên 32 đến 52 triệu VNĐ"));
-        list.add(new TaxBracket(6, 52000000.0, 80000000.0, 0.30, 5850000.0, "Trên 52 đến 80 triệu VNĐ"));
-        list.add(new TaxBracket(7, 80000000.0, Double.MAX_VALUE, 0.35, 9850000.0, "Trên 80 triệu VNĐ"));
+        list.add(new TaxBracket(1, 0.0, 10000000.0, 0.05, 0.0, "Đến 10 triệu VNĐ"));
+        list.add(new TaxBracket(2, 10000000.0, 30000000.0, 0.10, 500000.0, "Trên 10 đến 30 triệu VNĐ"));
+        list.add(new TaxBracket(3, 30000000.0, 60000000.0, 0.20, 3500000.0, "Trên 30 đến 60 triệu VNĐ"));
+        list.add(new TaxBracket(4, 60000000.0, 100000000.0, 0.30, 9500000.0, "Trên 60 đến 100 triệu VNĐ"));
+        list.add(new TaxBracket(5, 100000000.0, Double.MAX_VALUE, 0.35, 14500000.0, "Trên 100 triệu VNĐ"));
         return list;
     }
 

@@ -42,14 +42,14 @@ public class PaymentService {
 <span class="fc" id="L42">        String txnRef = &quot;TXN&quot; + UUID.randomUUID().toString().substring(0, 8).toUpperCase();</span>
 
 <span class="fc" id="L44">        PaymentReceipt receipt = new PaymentReceipt(</span>
-                receiptId,
+<span class="fc" id="L45">                receiptId,</span>
 <span class="fc" id="L46">                dec.getId(),</span>
 <span class="fc" id="L47">                user.getId(),</span>
 <span class="fc" id="L48">                user.getFullName(),</span>
 <span class="fc" id="L49">                user.getTaxCode(),</span>
 <span class="fc" id="L50">                dec.getTaxAmount(),</span>
 <span class="pc bpc" id="L51" title="1 of 2 branches missed.">                paymentMethod != null ? paymentMethod : &quot;VNPAY_QR&quot;,</span>
-                txnRef
+<span class="fc" id="L52">                txnRef</span>
         );
 
 <span class="fc" id="L55">        receiptMap.put(receiptId, receipt);</span>

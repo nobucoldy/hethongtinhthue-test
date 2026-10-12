@@ -3,62 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản Trị Viên & Cán Bộ Thuế - PIT System</title>
+    <title>Quản Trị Viên & Cán Bộ Thuế - Hệ Thống Thuế Quốc Gia PIT 2.0</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow-sm">
+    <!-- Navbar GovTech 2.0 -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-gov sticky-top">
         <div class="container">
-            <a class="navbar-brand text-warning" href="/admin.html" id="admin-brand-link">
-                <i class="fa-solid fa-user-shield"></i> Cán Bộ Thuế - Quản Trị Hệ Thống PIT
+            <a class="navbar-brand" href="/admin.html" id="admin-brand-link">
+                <span class="gov-emblem"><i class="fa-solid fa-user-shield"></i></span>
+                <div>
+                    <span class="text-warning">Cổng Quản Trị Cán Bộ Thuế</span>
+                    <span class="brand-subtitle text-white-50">Giám sát, Quyết toán & Cấu hình Tham số Quốc gia</span>
+                </div>
             </a>
             <div class="ms-auto d-flex align-items-center">
-                <span class="text-white me-3" id="admin-name">
-                    <i class="fa-solid fa-user-tie"></i> Đang tải...
+                <a href="/index.html" class="btn btn-outline-light btn-sm me-3 d-none d-sm-inline-block">
+                    <i class="fa-solid fa-house-chimney"></i> Trang chủ
+                </a>
+                <span class="text-white me-3 fw-semibold" id="admin-name">
+                    <i class="fa-solid fa-user-tie text-warning me-1"></i> Đang tải...
                 </span>
-                <button class="btn btn-outline-light btn-sm" onclick="logout()" id="btn-admin-logout" data-testid="btn-admin-logout">
-                    <i class="fa-solid fa-right-from-bracket"></i> Đăng xuất
+                <button class="btn btn-gov-gold btn-sm px-3" onclick="logout()" id="btn-admin-logout" data-testid="btn-admin-logout">
+                    <i class="fa-solid fa-right-from-bracket me-1"></i> Đăng xuất
                 </button>
             </div>
         </div>
     </nav>
 
     <div class="container my-4">
-        <!-- 3 Metric Cards -->
+        <!-- 3 Modern GovTech KPI Metric Cards -->
         <div class="row g-3 mb-4">
             <div class="col-md-4">
-                <div class="card bg-primary text-white p-3">
+                <div class="kpi-card kpi-navy">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <div class="text-white-50 small">TỔNG TỜ KHAI THUẾ</div>
-                            <h3 class="fw-bold mb-0" id="statTotalDec">0</h3>
+                            <div class="text-white-50 small fw-bold text-uppercase mb-1">Tổng hồ sơ tờ khai thuế</div>
+                            <h2 class="fw-bold mb-0 text-warning" id="statTotalDec">0</h2>
                         </div>
-                        <i class="fa-solid fa-file-invoice-dollar fa-3x opacity-50"></i>
+                        <div class="kpi-icon-box">
+                            <i class="fa-solid fa-file-invoice-dollar text-warning"></i>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card bg-success text-white p-3">
+                <div class="kpi-card kpi-emerald">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <div class="text-white-50 small">THUẾ ĐÃ THU VÀO KBNN</div>
-                            <h3 class="fw-bold mb-0" id="statPaidTax">0 đ</h3>
+                            <div class="text-white-50 small fw-bold text-uppercase mb-1">Thuế đã thu vào KBNN</div>
+                            <h2 class="fw-bold mb-0" id="statPaidTax">0 đ</h2>
                         </div>
-                        <i class="fa-solid fa-sack-dollar fa-3x opacity-50"></i>
+                        <div class="kpi-icon-box">
+                            <i class="fa-solid fa-sack-dollar"></i>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card bg-warning text-dark p-3">
+                <div class="kpi-card kpi-amber">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <div class="small fw-semibold">THUẾ CHỜ NỘP</div>
-                            <h3 class="fw-bold mb-0" id="statPendingTax">0 đ</h3>
+                            <div class="text-white-50 small fw-bold text-uppercase mb-1">Thuế chờ nộp (Đang xử lý)</div>
+                            <h2 class="fw-bold mb-0" id="statPendingTax">0 đ</h2>
                         </div>
-                        <i class="fa-solid fa-hourglass-half fa-3x opacity-50"></i>
+                        <div class="kpi-icon-box">
+                            <i class="fa-solid fa-hourglass-half"></i>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -68,12 +81,12 @@
         <ul class="nav nav-tabs mb-4" id="adminTabs" role="tablist">
             <li class="nav-item">
                 <button class="nav-link active fw-bold" id="tracking-tab" data-bs-toggle="tab" data-bs-target="#tracking-pane">
-                    <i class="fa-solid fa-table-list"></i> 1. Theo Dõi Danh Sách & Xuất Báo Cáo
+                    <i class="fa-solid fa-table-list text-warning me-1"></i> 1. Theo Dõi Danh Sách & Xuất Báo Cáo Quyết Toán
                 </button>
             </li>
             <li class="nav-item">
                 <button class="nav-link fw-bold" id="config-tab" data-bs-toggle="tab" data-bs-target="#config-pane">
-                    <i class="fa-solid fa-gear"></i> 2. Cấu Hình Tham Số Thuế
+                    <i class="fa-solid fa-sliders text-primary me-1"></i> 2. Cấu Hình Tham Số Thuế & Biểu Lũy Tiến 5 Bậc
                 </button>
             </li>
         </ul>
@@ -82,11 +95,11 @@
             <!-- PANE 1: THEO DÕI & XUẤT BÁO CÁO -->
             <div class="tab-pane fade show active" id="tracking-pane">
                 <div class="card mb-4">
-                    <div class="card-body">
+                    <div class="card-body p-4">
                         <!-- Filters -->
-                        <form id="filterForm" class="row g-2 align-items-end">
+                        <form id="filterForm" class="row g-3 align-items-end">
                             <div class="col-md-2">
-                                <label class="form-label small fw-semibold" for="filterYear">Năm kê khai</label>
+                                <label class="form-label small fw-bold text-uppercase text-muted" for="filterYear">Năm kê khai</label>
                                 <select class="form-select form-select-sm" id="filterYear" data-testid="filter-year">
                                     <option value="">Tất cả các năm</option>
                                     <option value="2026" selected>2026</option>
@@ -94,7 +107,7 @@
                                 </select>
                             </div>
                             <div class="col-md-2">
-                                <label class="form-label small fw-semibold" for="filterMonth">Tháng</label>
+                                <label class="form-label small fw-bold text-uppercase text-muted" for="filterMonth">Kỳ tháng</label>
                                 <select class="form-select form-select-sm" id="filterMonth" data-testid="filter-month">
                                     <option value="" selected>Tất cả các tháng</option>
                                     <option value="1">Tháng 1</option>
@@ -113,7 +126,7 @@
                                 </select>
                             </div>
                             <div class="col-md-2">
-                                <label class="form-label small fw-semibold" for="filterStatus">Trạng thái</label>
+                                <label class="form-label small fw-bold text-uppercase text-muted" for="filterStatus">Trạng thái nộp</label>
                                 <select class="form-select form-select-sm" id="filterStatus" data-testid="filter-status">
                                     <option value="ALL" selected>Tất cả trạng thái</option>
                                     <option value="PAID">Đã nộp thuế</option>
@@ -121,15 +134,15 @@
                                 </select>
                             </div>
                             <div class="col-md-3">
-                                <label class="form-label small fw-semibold" for="filterKeyword">Tìm kiếm (Họ tên / MST / CCCD)</label>
-                                <input type="text" class="form-control form-select-sm" id="filterKeyword" data-testid="filter-keyword" placeholder="Nhập từ khóa...">
+                                <label class="form-label small fw-bold text-uppercase text-muted" for="filterKeyword">Tìm kiếm (Họ tên / MST / CCCD)</label>
+                                <input type="text" class="form-control form-control-sm" id="filterKeyword" data-testid="filter-keyword" placeholder="Nhập tên, MST hoặc CCCD...">
                             </div>
                             <div class="col-md-3 d-flex gap-2">
-                                <button type="submit" class="btn btn-primary btn-sm flex-grow-1" id="btn-search" data-testid="btn-search">
-                                    <i class="fa-solid fa-filter"></i> Lọc
+                                <button type="submit" class="btn btn-gov-primary btn-sm flex-grow-1 py-2" id="btn-search" data-testid="btn-search">
+                                    <i class="fa-solid fa-filter me-1"></i> Lọc dữ liệu
                                 </button>
-                                <button type="button" class="btn btn-success btn-sm flex-grow-1 fw-bold" onclick="exportCsvReport()" id="btn-export-csv" data-testid="btn-export-csv">
-                                    <i class="fa-solid fa-file-csv"></i> Xuất Báo Cáo
+                                <button type="button" class="btn btn-success btn-sm flex-grow-1 fw-bold py-2" onclick="exportCsvReport()" id="btn-export-csv" data-testid="btn-export-csv">
+                                    <i class="fa-solid fa-file-csv me-1"></i> Xuất CSV
                                 </button>
                             </div>
                         </form>
@@ -138,26 +151,26 @@
 
                 <!-- Declarations Table -->
                 <div class="card">
-                    <div class="card-header bg-white d-flex justify-content-between align-items-center">
-                        <h5 class="card-title text-primary mb-0">
-                            <i class="fa-solid fa-list-check"></i> Danh Sách Tờ Khai Toàn Hệ Thống
+                    <div class="card-header card-header-gov d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0 fw-bold" style="color: var(--gov-navy-800);">
+                            <i class="fa-solid fa-list-check text-warning me-2"></i> Danh Sách Tờ Khai Toàn Hệ Thống
                         </h5>
-                        <span class="badge bg-secondary" id="totalRecordsBadge">0 bản ghi</span>
+                        <span class="badge px-3 py-2" style="background: var(--gov-navy-800);" id="totalRecordsBadge">0 bản ghi</span>
                     </div>
                     <div class="card-body p-0">
                         <div class="table-responsive">
-                            <table class="table table-hover align-middle mb-0" id="adminDecTable">
+                            <table class="table table-hover align-middle mb-0 text-nowrap" id="adminDecTable">
                                 <thead class="table-light">
                                     <tr>
-                                        <th>Mã Tờ Khai</th>
+                                        <th>Mã TK</th>
                                         <th>Họ và Tên</th>
                                         <th>Mã Số Thuế</th>
-                                        <th>CCCD</th>
-                                        <th>Kỳ Khai</th>
+                                        <th>Số CCCD</th>
+                                        <th>Kỳ Thuế</th>
                                         <th>Tổng Thu Nhập</th>
                                         <th>Giảm Trừ</th>
-                                        <th>Thu Nhập Tính Thuế</th>
-                                        <th>Thuế Phải Nộp</th>
+                                        <th>TN Tính Thuế</th>
+                                        <th>Số Thuế</th>
                                         <th>Trạng Thái</th>
                                     </tr>
                                 </thead>
@@ -173,31 +186,30 @@
             <!-- PANE 2: CẤU HÌNH HỆ THỐNG -->
             <div class="tab-pane fade" id="config-pane">
                 <div class="row g-4">
-                    <!-- Config Form -->
-                    <div class="col-lg-6">
+                    <div class="col-lg-5">
                         <div class="card h-100">
-                            <div class="card-header bg-white">
-                                <h5 class="card-title text-primary mb-0">
-                                    <i class="fa-solid fa-sliders"></i> Cập Nhật Mức Giảm Trừ & Tỷ Lệ Bảo Hiểm
+                            <div class="card-header card-header-gov">
+                                <h5 class="card-title mb-0 fw-bold" style="color: var(--gov-navy-800);">
+                                    <i class="fa-solid fa-sliders text-warning me-2"></i> Cập Nhật Mức Giảm Trừ & Tỷ Lệ Bảo Hiểm
                                 </h5>
                             </div>
-                            <div class="card-body">
+                            <div class="card-body p-4">
                                 <form id="configForm">
                                     <div class="mb-3">
                                         <label class="form-label fw-semibold" for="cfgPersonal">Mức giảm trừ bản thân (VNĐ/tháng)</label>
                                         <div class="input-group">
-                                            <input type="number" class="form-control" id="cfgPersonal" data-testid="cfg-personal" min="0" required>
+                                            <input type="number" class="form-control fw-bold" id="cfgPersonal" data-testid="cfg-personal" min="0" required>
                                             <span class="input-group-text">VNĐ</span>
                                         </div>
-                                        <div class="form-text">Hiện hành theo Nghị quyết 954/2020: 11.000.000 VNĐ/tháng.</div>
+                                        <div class="form-text">Theo Văn bản 112/VBHN-VPQH (hiệu lực 01/07/2026): 15.500.000 VNĐ/tháng.</div>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label fw-semibold" for="cfgDependent">Mức giảm trừ mỗi người phụ thuộc (VNĐ/tháng/người)</label>
                                         <div class="input-group">
-                                            <input type="number" class="form-control" id="cfgDependent" data-testid="cfg-dependent" min="0" required>
+                                            <input type="number" class="form-control fw-bold" id="cfgDependent" data-testid="cfg-dependent" min="0" required>
                                             <span class="input-group-text">VNĐ</span>
                                         </div>
-                                        <div class="form-text">Hiện hành theo Nghị quyết 954/2020: 4.400.000 VNĐ/tháng/người.</div>
+                                        <div class="form-text">Theo Văn bản 112/VBHN-VPQH (hiệu lực 01/07/2026): 6.200.000 VNĐ/tháng/người.</div>
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col-md-4">
@@ -218,11 +230,11 @@
                                         <input type="number" class="form-control" id="cfgInsuranceCap" data-testid="cfg-insurance-cap" min="0" required>
                                     </div>
                                     <div class="d-flex gap-2">
-                                        <button type="button" class="btn btn-outline-danger w-50" onclick="resetConfigDefault()" id="btn-reset-config">
-                                            <i class="fa-solid fa-rotate-left"></i> Khôi phục mặc định
+                                        <button type="button" class="btn btn-outline-danger w-50 fw-semibold" onclick="resetConfigDefault()" id="btn-reset-config">
+                                            <i class="fa-solid fa-rotate-left me-1"></i> Khôi phục mặc định
                                         </button>
-                                        <button type="submit" class="btn btn-primary w-50 fw-bold" id="btn-save-config" data-testid="btn-save-config">
-                                            <i class="fa-solid fa-floppy-disk"></i> Lưu Cấu Hình
+                                        <button type="submit" class="btn btn-gov-gold w-50 fw-bold" id="btn-save-config" data-testid="btn-save-config">
+                                            <i class="fa-solid fa-floppy-disk me-1"></i> Lưu Cấu Hình
                                         </button>
                                     </div>
                                 </form>
@@ -231,69 +243,66 @@
                     </div>
 
                     <!-- Progressive Bracket Reference -->
-                    <div class="col-lg-6">
+                    <div class="col-lg-7">
                         <div class="card h-100">
-                            <div class="card-header bg-white">
-                                <h5 class="card-title text-success mb-0">
-                                    <i class="fa-solid fa-scale-balanced"></i> Biểu Thuế Lũy Tiến Từng Phần (Luật Thuế TNCN)
+                            <div class="card-header card-header-gov d-flex justify-content-between align-items-center flex-wrap gap-2">
+                                <h5 class="card-title mb-0 fw-bold text-nowrap" style="color: var(--gov-navy-800);">
+                                    <i class="fa-solid fa-scale-balanced text-warning me-2"></i> Biểu Thuế Lũy Tiến Từng Phần
                                 </h5>
+                                <span class="badge text-nowrap" style="background: var(--gov-navy-800);">5 Bậc • VB 112/VBHN-VPQH</span>
                             </div>
-                            <div class="card-body">
+                            <div class="card-body p-3 p-xl-4 d-flex flex-column justify-content-between">
                                 <div class="table-responsive">
-                                    <table class="table table-bordered table-striped align-middle text-center">
-                                        <thead class="table-light">
+                                    <table class="table table-bordered table-striped align-middle mb-0 table-bracket-nowrap">
+                                        <thead class="table-light text-center">
                                             <tr>
                                                 <th>Bậc</th>
-                                                <th>Phần TNTT / tháng</th>
+                                                <th class="text-start">Phần TNTT / tháng</th>
                                                 <th>Thuế suất</th>
-                                                <th>Công thức rút gọn</th>
+                                                <th class="text-end">Công thức rút gọn</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td><span class="badge bg-secondary">Bậc 1</span></td>
-                                                <td>Đến 5 triệu VNĐ</td>
-                                                <td>5%</td>
-                                                <td>TNTT × 5%</td>
+                                                <td class="text-center"><span class="badge px-2 py-1" style="background: #10b981;">Bậc 1</span></td>
+                                                <td class="text-start fw-medium">Đến 10 triệu VNĐ</td>
+                                                <td class="text-center fw-bold text-success">5%</td>
+                                                <td class="text-end font-monospace fw-semibold">TNTT × 5%</td>
                                             </tr>
                                             <tr>
-                                                <td><span class="badge bg-secondary">Bậc 2</span></td>
-                                                <td>Trên 5 đến 10 triệu VNĐ</td>
-                                                <td>10%</td>
-                                                <td>TNTT × 10% - 250.000</td>
+                                                <td class="text-center"><span class="badge px-2 py-1" style="background: #0ea5e9;">Bậc 2</span></td>
+                                                <td class="text-start fw-medium">Trên 10 đến 30 triệu VNĐ</td>
+                                                <td class="text-center fw-bold text-info">10%</td>
+                                                <td class="text-end font-monospace fw-semibold">TNTT × 10% - 500.000</td>
                                             </tr>
                                             <tr>
-                                                <td><span class="badge bg-secondary">Bậc 3</span></td>
-                                                <td>Trên 10 đến 18 triệu VNĐ</td>
-                                                <td>15%</td>
-                                                <td>TNTT × 15% - 750.000</td>
+                                                <td class="text-center"><span class="badge px-2 py-1" style="background: #6366f1;">Bậc 3</span></td>
+                                                <td class="text-start fw-medium">Trên 30 đến 60 triệu VNĐ</td>
+                                                <td class="text-center fw-bold text-primary">20%</td>
+                                                <td class="text-end font-monospace fw-semibold">TNTT × 20% - 3.500.000</td>
                                             </tr>
                                             <tr>
-                                                <td><span class="badge bg-secondary">Bậc 4</span></td>
-                                                <td>Trên 18 đến 32 triệu VNĐ</td>
-                                                <td>20%</td>
-                                                <td>TNTT × 20% - 1.650.000</td>
+                                                <td class="text-center"><span class="badge px-2 py-1" style="background: #f59e0b;">Bậc 4</span></td>
+                                                <td class="text-start fw-medium">Trên 60 đến 100 triệu VNĐ</td>
+                                                <td class="text-center fw-bold text-warning">30%</td>
+                                                <td class="text-end font-monospace fw-semibold">TNTT × 30% - 9.500.000</td>
                                             </tr>
                                             <tr>
-                                                <td><span class="badge bg-secondary">Bậc 5</span></td>
-                                                <td>Trên 32 đến 52 triệu VNĐ</td>
-                                                <td>25%</td>
-                                                <td>TNTT × 25% - 3.250.000</td>
-                                            </tr>
-                                            <tr>
-                                                <td><span class="badge bg-secondary">Bậc 6</span></td>
-                                                <td>Trên 52 đến 80 triệu VNĐ</td>
-                                                <td>30%</td>
-                                                <td>TNTT × 30% - 5.850.000</td>
-                                            </tr>
-                                            <tr>
-                                                <td><span class="badge bg-danger">Bậc 7</span></td>
-                                                <td>Trên 80 triệu VNĐ</td>
-                                                <td>35%</td>
-                                                <td>TNTT × 35% - 9.850.000</td>
+                                                <td class="text-center"><span class="badge px-2 py-1" style="background: #dc2626;">Bậc 5</span></td>
+                                                <td class="text-start fw-medium">Trên 100 triệu VNĐ</td>
+                                                <td class="text-center fw-bold text-danger">35%</td>
+                                                <td class="text-end font-monospace fw-semibold">TNTT × 35% - 14.500.000</td>
                                             </tr>
                                         </tbody>
                                     </table>
+                                </div>
+
+                                <div class="p-3 rounded mt-3 small" style="background: #f8fafc; border: 1px solid #e2e8f0;">
+                                    <div class="fw-bold mb-1" style="color: var(--gov-navy-800);">
+                                        <i class="fa-solid fa-circle-info text-warning me-1"></i> Ghi chú quy tắc tính:
+                                    </div>
+                                    <div class="text-muted mb-1">• <strong>TNTT (Thu nhập tính thuế)</strong> = Thu nhập chịu thuế − Bảo hiểm (10.5%) − Giảm trừ gia cảnh − Từ thiện.</div>
+                                    <div class="text-muted mb-0">• Hai phương pháp <em>Lũy tiến từng bậc</em> và <em>Công thức rút gọn</em> luôn cho kết quả đồng nhất 100%.</div>
                                 </div>
                             </div>
                         </div>
@@ -302,6 +311,13 @@
             </div>
         </div>
     </div>
+
+    <footer class="footer text-center mt-5">
+        <div class="container">
+            <p class="mb-1 fw-bold text-white"><i class="fa-solid fa-landmark text-warning me-2"></i> HỆ THỐNG QUẢN TRỊ THUẾ THU NHẬP CÁ NHÂN QUỐC GIA - PIT SYSTEM</p>
+            <p class="mb-0 small">Phân hệ dành riêng cho Cán bộ thuế & Quản trị viên • Văn bản hợp nhất số 112/VBHN-VPQH</p>
+        </div>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/js/app.js"></script>

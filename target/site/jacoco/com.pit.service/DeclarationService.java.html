@@ -124,8 +124,8 @@ public class DeclarationService {
 
     public synchronized List&lt;TaxDeclaration&gt; getDeclarationsByUser(String userId, String username) {
 <span class="nc" id="L126">        return declarationMap.values().stream()</span>
-<span class="nc bnc" id="L127" title="All 6 branches missed.">                .filter(d -&gt; (userId != null &amp;&amp; userId.equals(d.getUserId())) ||</span>
-<span class="nc bnc" id="L128" title="All 4 branches missed.">                             (username != null &amp;&amp; (&quot;nguyenvana&quot;.equalsIgnoreCase(username) &amp;&amp; &quot;user-sample-1&quot;.equals(d.getUserId()))))</span>
+<span class="nc bnc" id="L127" title="All 4 branches missed.">                .filter(d -&gt; (userId != null &amp;&amp; userId.equals(d.getUserId())) ||</span>
+<span class="nc bnc" id="L128" title="All 6 branches missed.">                             (username != null &amp;&amp; (&quot;nguyenvana&quot;.equalsIgnoreCase(username) &amp;&amp; &quot;user-sample-1&quot;.equals(d.getUserId()))))</span>
 <span class="nc" id="L129">                .sorted((a, b) -&gt; b.getCreatedAt().compareTo(a.getCreatedAt()))</span>
 <span class="nc" id="L130">                .collect(Collectors.toList());</span>
     }
@@ -185,7 +185,7 @@ public class DeclarationService {
 <span class="fc" id="L185">                    d.getStatus(),</span>
 <span class="fc" id="L186">                    d.getCreatedAt()</span>
             ));
-<span class="fc" id="L188">        }</span>
+        }
 <span class="fc" id="L189">        return sb.toString();</span>
     }
 }
